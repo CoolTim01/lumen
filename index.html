@@ -27,1637 +27,620 @@
             --gradient: linear-gradient(135deg, #7c3aed 0%, #8b5cf6 30%, #a78bfa 60%, #c4b5fd 100%);
             --gradient-dark: linear-gradient(135deg, #5b21b6 0%, #7c3aed 50%, #8b5cf6 100%);
         }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
+        * { margin:0; padding:0; box-sizing:border-box; }
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
             background: var(--bg);
-            background-image: 
-                radial-gradient(ellipse at 20% 20%, rgba(139, 92, 246, 0.08) 0%, transparent 50%),
-                radial-gradient(ellipse at 80% 80%, rgba(124, 58, 237, 0.06) 0%, transparent 50%);
-            color: var(--text);
-            height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            overflow: hidden;
-            user-select: none;
-            -webkit-user-select: none;
+            background-image: radial-gradient(ellipse at 20% 20%, rgba(139,92,246,0.08) 0%, transparent 50%), radial-gradient(ellipse at 80% 80%, rgba(124,58,237,0.06) 0%, transparent 50%);
+            color: var(--text); height:100vh; display:flex; align-items:center; justify-content:center; overflow:hidden;
+            user-select:none; -webkit-user-select:none;
         }
-
         #app {
-            width: 100%;
-            max-width: 920px;
-            height: 95vh;
-            max-height: 720px;
-            background: var(--surface);
-            border-radius: 20px;
-            box-shadow: var(--shadow);
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
-            border: 1px solid var(--border);
-            position: relative;
+            width:100%; max-width:920px; height:95vh; max-height:720px; background:var(--surface); border-radius:20px;
+            box-shadow:var(--shadow); display:flex; flex-direction:column; overflow:hidden; border:1px solid var(--border); position:relative;
         }
-
         #app::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 3px;
-            background: var(--gradient);
-            z-index: 10;
-            border-radius: 20px 20px 0 0;
+            content:''; position:absolute; top:0; left:0; right:0; height:3px; background:var(--gradient); z-index:10; border-radius:20px 20px 0 0;
         }
-
         /* === AUTH SCREEN === */
         #auth-screen {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            padding: 40px;
-            gap: 16px;
-            position: relative;
-            z-index: 5;
-        }
-        #auth-screen .logo-container {
-            margin-bottom: 8px;
+            flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:40px; gap:14px; position:relative; z-index:5;
         }
         #auth-screen .logo-icon {
-            width: 64px;
-            height: 64px;
-            border-radius: 18px;
-            background: var(--gradient);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 32px;
-            margin: 0 auto 12px;
-            box-shadow: 0 8px 24px rgba(139, 92, 246, 0.35);
+            width:64px; height:64px; border-radius:18px; background:var(--gradient); display:flex; align-items:center; justify-content:center;
+            font-size:32px; margin:0 auto 10px; box-shadow:0 8px 24px rgba(139,92,246,0.35);
         }
         #auth-screen .logo {
-            font-size: 42px;
-            font-weight: 800;
-            letter-spacing: -1.5px;
-            background: var(--gradient);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
+            font-size:42px; font-weight:800; letter-spacing:-1.5px; background:var(--gradient); -webkit-background-clip:text;
+            -webkit-text-fill-color:transparent; background-clip:text;
         }
-        #auth-screen .subtitle {
-            color: var(--text2);
-            font-size: 13px;
-            margin-top: -8px;
-            margin-bottom: 12px;
-            text-align: center;
-            line-height: 1.5;
-        }
+        #auth-screen .subtitle { color:var(--text2); font-size:13px; margin-top:-6px; margin-bottom:10px; text-align:center; line-height:1.5; }
         #auth-screen input {
-            width: 100%;
-            max-width: 340px;
-            padding: 13px 16px;
-            background: var(--surface2);
-            border: 1.5px solid var(--border);
-            border-radius: var(--radius-sm);
-            color: var(--text);
-            font-size: 15px;
-            outline: none;
-            transition: var(--transition);
+            width:100%; max-width:340px; padding:13px 16px; background:var(--surface2); border:1.5px solid var(--border);
+            border-radius:var(--radius-sm); color:var(--text); font-size:15px; outline:none; transition:var(--transition);
         }
-        #auth-screen input:focus {
-            border-color: var(--accent);
-            box-shadow: 0 0 0 4px rgba(139, 92, 246, 0.12);
-        }
-        #auth-screen input::placeholder {
-            color: #6b6b80;
-        }
+        #auth-screen input:focus { border-color:var(--accent); box-shadow:0 0 0 4px rgba(139,92,246,0.12); }
+        #auth-screen input::placeholder { color:#6b6b80; }
         .btn {
-            width: 100%;
-            max-width: 340px;
-            padding: 13px;
-            border: none;
-            border-radius: var(--radius-sm);
-            font-size: 15px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: var(--transition);
-            position: relative;
-            overflow: hidden;
+            width:100%; max-width:340px; padding:13px; border:none; border-radius:var(--radius-sm); font-size:15px; font-weight:600;
+            cursor:pointer; transition:var(--transition); position:relative; overflow:hidden;
         }
-        .btn:active {
-            transform: scale(0.97);
+        .btn:active { transform:scale(0.97); }
+        .btn-primary { background:var(--gradient-dark); color:#fff; box-shadow:0 4px 16px rgba(139,92,246,0.3); }
+        .btn-primary:hover { box-shadow:0 6px 24px rgba(139,92,246,0.45); transform:translateY(-1px); }
+        .btn-secondary { background:var(--surface2); color:var(--text); border:1.5px solid var(--border); }
+        .btn-secondary:hover { border-color:var(--accent); background:#1f1f36; }
+        .divider { color:var(--text2); font-size:12px; display:flex; align-items:center; gap:12px; max-width:340px; width:100%; }
+        .divider::before,.divider::after { content:''; flex:1; height:1px; background:var(--border); }
+        .auth-error { color:var(--danger); font-size:13px; min-height:18px; text-align:center; }
+        .auth-hint { font-size:11px; color:var(--text2); text-align:center; margin-top:2px; }
+        .auth-tabs { display:flex; gap:0; max-width:340px; width:100%; border-radius:var(--radius-sm); overflow:hidden; border:1px solid var(--border); }
+        .auth-tab {
+            flex:1; padding:10px; text-align:center; font-size:14px; font-weight:600; cursor:pointer; transition:var(--transition);
+            background:var(--surface2); color:var(--text2); border:none;
         }
-        .btn-primary {
-            background: var(--gradient-dark);
-            color: #fff;
-            box-shadow: 0 4px 16px rgba(139, 92, 246, 0.3);
-        }
-        .btn-primary:hover {
-            box-shadow: 0 6px 24px rgba(139, 92, 246, 0.45);
-            transform: translateY(-1px);
-        }
-        .btn-secondary {
-            background: var(--surface2);
-            color: var(--text);
-            border: 1.5px solid var(--border);
-        }
-        .btn-secondary:hover {
-            border-color: var(--accent);
-            background: #1f1f36;
-        }
-        .btn-google {
-            background: #fff;
-            color: #1a1a1a;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            border: 1.5px solid #e0e0e0;
-        }
-        .btn-google:hover {
-            background: #f5f5f5;
-            border-color: #ccc;
-        }
-        .divider {
-            color: var(--text2);
-            font-size: 12px;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            max-width: 340px;
-            width: 100%;
-        }
-        .divider::before,
-        .divider::after {
-            content: '';
-            flex: 1;
-            height: 1px;
-            background: var(--border);
-        }
-        .auth-error {
-            color: var(--danger);
-            font-size: 13px;
-            min-height: 20px;
-            text-align: center;
-        }
-        .auth-hint {
-            font-size: 11px;
-            color: var(--text2);
-            text-align: center;
-            margin-top: -4px;
-        }
-
-        /* === MAIN LAYOUT === */
-        #main-screen {
-            display: none;
-            flex: 1;
-            flex-direction: row;
-            height: 100%;
-            overflow: hidden;
-        }
-        #main-screen.active {
-            display: flex;
-        }
-
-        /* === SIDEBAR === */
-        #sidebar {
-            width: 310px;
-            min-width: 310px;
-            background: var(--surface2);
-            display: flex;
-            flex-direction: column;
-            border-right: 1px solid var(--border);
-            position: relative;
-            z-index: 5;
-        }
-        #sidebar-header {
-            padding: 16px 16px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            border-bottom: 1px solid var(--border);
-            background: rgba(139, 92, 246, 0.04);
-        }
-        #sidebar-header .user-info {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
+        .auth-tab.active { background:var(--accent); color:#fff; }
+        #reg-fields { display:none; width:100%; max-width:340px; }
+        #reg-fields.show { display:flex; flex-direction:column; gap:10px; }
+        /* === MAIN SCREEN === */
+        #main-screen { display:none; flex:1; flex-direction:row; height:100%; overflow:hidden; }
+        #main-screen.active { display:flex; }
+        #sidebar { width:310px; min-width:310px; background:var(--surface2); display:flex; flex-direction:column; border-right:1px solid var(--border); position:relative; z-index:5; }
+        #sidebar-header { padding:16px; display:flex; align-items:center; justify-content:space-between; border-bottom:1px solid var(--border); background:rgba(139,92,246,0.04); }
+        #sidebar-header .user-info { display:flex; align-items:center; gap:10px; }
         #sidebar-header .avatar {
-            width: 38px;
-            height: 38px;
-            border-radius: 50%;
-            background: var(--gradient);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 700;
-            font-size: 15px;
-            color: #fff;
-            box-shadow: 0 2px 8px rgba(139, 92, 246, 0.3);
+            width:38px; height:38px; border-radius:50%; background:var(--gradient); display:flex; align-items:center; justify-content:center;
+            font-weight:700; font-size:15px; color:#fff; box-shadow:0 2px 8px rgba(139,92,246,0.3);
         }
-        #sidebar-header .username {
-            font-weight: 600;
-            font-size: 14px;
-        }
+        #sidebar-header .username { font-weight:600; font-size:14px; }
         #sidebar-header .logout-btn {
-            background: none;
-            border: 1px solid var(--border);
-            color: var(--text2);
-            padding: 6px 14px;
-            border-radius: 20px;
-            cursor: pointer;
-            font-size: 12px;
-            transition: var(--transition);
-            font-weight: 500;
+            background:none; border:1px solid var(--border); color:var(--text2); padding:6px 14px; border-radius:20px; cursor:pointer;
+            font-size:12px; transition:var(--transition); font-weight:500;
         }
-        #sidebar-header .logout-btn:hover {
-            border-color: var(--danger);
-            color: var(--danger);
-            background: rgba(239, 68, 68, 0.06);
-        }
-
-        .sidebar-section-title {
-            padding: 14px 16px 8px;
-            font-size: 10px;
-            text-transform: uppercase;
-            letter-spacing: 1.5px;
-            color: var(--accent2);
-            font-weight: 700;
-        }
-        #contacts-list {
-            flex: 1;
-            overflow-y: auto;
-            padding: 0 8px;
-        }
-        #contacts-list::-webkit-scrollbar {
-            width: 3px;
-        }
-        #contacts-list::-webkit-scrollbar-thumb {
-            background: #3a3a50;
-            border-radius: 3px;
-        }
-        .contact-item {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            padding: 10px 12px;
-            border-radius: var(--radius-sm);
-            cursor: pointer;
-            transition: var(--transition);
-            margin-bottom: 2px;
-        }
-        .contact-item:hover {
-            background: rgba(139, 92, 246, 0.08);
-        }
-        .contact-item.active {
-            background: rgba(139, 92, 246, 0.18);
-            box-shadow: inset 3px 0 0 var(--accent);
-        }
+        #sidebar-header .logout-btn:hover { border-color:var(--danger); color:var(--danger); background:rgba(239,68,68,0.06); }
+        .sidebar-section-title { padding:14px 16px 8px; font-size:10px; text-transform:uppercase; letter-spacing:1.5px; color:var(--accent2); font-weight:700; }
+        #contacts-list { flex:1; overflow-y:auto; padding:0 8px; }
+        #contacts-list::-webkit-scrollbar { width:3px; }
+        #contacts-list::-webkit-scrollbar-thumb { background:#3a3a50; border-radius:3px; }
+        .contact-item { display:flex; align-items:center; gap:10px; padding:10px 12px; border-radius:var(--radius-sm); cursor:pointer; transition:var(--transition); margin-bottom:2px; }
+        .contact-item:hover { background:rgba(139,92,246,0.08); }
+        .contact-item.active { background:rgba(139,92,246,0.18); box-shadow:inset 3px 0 0 var(--accent); }
         .contact-item .contact-avatar {
-            width: 42px;
-            height: 42px;
-            border-radius: 50%;
-            background: #2a2a40;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 700;
-            font-size: 17px;
-            position: relative;
-            flex-shrink: 0;
-            color: var(--accent2);
+            width:42px; height:42px; border-radius:50%; background:#2a2a40; display:flex; align-items:center; justify-content:center;
+            font-weight:700; font-size:17px; position:relative; flex-shrink:0; color:var(--accent2);
         }
-        .contact-item.active .contact-avatar {
-            background: var(--gradient);
-            color: #fff;
-        }
-        .contact-item .status-dot {
-            width: 11px;
-            height: 11px;
-            border-radius: 50%;
-            position: absolute;
-            bottom: 0px;
-            right: 0px;
-            border: 2.5px solid var(--surface2);
-        }
-        .status-dot.online {
-            background: var(--online);
-            box-shadow: 0 0 8px rgba(52, 211, 153, 0.5);
-        }
-        .status-dot.offline {
-            background: var(--offline);
-        }
-        .contact-item .contact-info {
-            flex: 1;
-            min-width: 0;
-        }
-        .contact-item .contact-name {
-            font-weight: 500;
-            font-size: 14px;
-        }
-        .contact-item .contact-status {
-            font-size: 11px;
-            color: var(--text2);
-            margin-top: 1px;
-        }
-        #add-contact-area {
-            padding: 12px 16px;
-            border-top: 1px solid var(--border);
-            display: flex;
-            gap: 8px;
-            background: rgba(0, 0, 0, 0.1);
-        }
+        .contact-item.active .contact-avatar { background:var(--gradient); color:#fff; }
+        .contact-item .status-dot { width:11px; height:11px; border-radius:50%; position:absolute; bottom:0; right:0; border:2.5px solid var(--surface2); }
+        .status-dot.online { background:var(--online); box-shadow:0 0 8px rgba(52,211,153,0.5); }
+        .status-dot.offline { background:var(--offline); }
+        .contact-item .contact-info { flex:1; min-width:0; }
+        .contact-item .contact-name { font-weight:500; font-size:14px; }
+        .contact-item .contact-status { font-size:11px; color:var(--text2); margin-top:1px; }
+        #add-contact-area { padding:12px 16px; border-top:1px solid var(--border); display:flex; gap:8px; background:rgba(0,0,0,0.1); }
         #add-contact-area input {
-            flex: 1;
-            padding: 9px 12px;
-            background: var(--surface);
-            border: 1.5px solid var(--border);
-            border-radius: 20px;
-            color: var(--text);
-            font-size: 13px;
-            outline: none;
-            min-width: 0;
-            transition: var(--transition);
+            flex:1; padding:9px 12px; background:var(--surface); border:1.5px solid var(--border); border-radius:20px; color:var(--text);
+            font-size:13px; outline:none; min-width:0; transition:var(--transition);
         }
-        #add-contact-area input:focus {
-            border-color: var(--accent);
-        }
+        #add-contact-area input:focus { border-color:var(--accent); }
         #add-contact-area button {
-            padding: 9px 16px;
-            background: var(--gradient-dark);
-            color: #fff;
-            border: none;
-            border-radius: 20px;
-            cursor: pointer;
-            font-size: 13px;
-            font-weight: 600;
-            white-space: nowrap;
-            transition: var(--transition);
+            padding:9px 16px; background:var(--gradient-dark); color:#fff; border:none; border-radius:20px; cursor:pointer; font-size:13px;
+            font-weight:600; white-space:nowrap; transition:var(--transition);
         }
-        #add-contact-area button:hover {
-            box-shadow: 0 4px 12px rgba(139, 92, 246, 0.35);
-        }
-
-        /* === CHAT AREA === */
-        #chat-area {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            min-width: 0;
-            background: var(--surface);
-        }
-        #chat-header {
-            padding: 14px 20px;
-            border-bottom: 1px solid var(--border);
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            background: rgba(139, 92, 246, 0.03);
-        }
-        #chat-header .chat-partner-wrap {
-            flex: 1;
-            min-width: 0;
-        }
-        #chat-header .chat-partner {
-            font-weight: 600;
-            font-size: 15px;
-        }
-        #chat-header .chat-partner-status {
-            font-size: 12px;
-            margin-top: 1px;
-        }
+        #add-contact-area button:hover { box-shadow:0 4px 12px rgba(139,92,246,0.35); }
+        #chat-area { flex:1; display:flex; flex-direction:column; min-width:0; background:var(--surface); }
+        #chat-header { padding:14px 20px; border-bottom:1px solid var(--border); display:flex; align-items:center; gap:12px; background:rgba(139,92,246,0.03); }
+        #chat-header .chat-partner-wrap { flex:1; min-width:0; }
+        #chat-header .chat-partner { font-weight:600; font-size:15px; }
+        #chat-header .chat-partner-status { font-size:12px; margin-top:1px; }
         .call-btn {
-            padding: 8px 18px;
-            background: var(--gradient);
-            color: #fff;
-            border: none;
-            border-radius: 20px;
-            cursor: pointer;
-            font-weight: 600;
-            font-size: 13px;
-            transition: var(--transition);
-            box-shadow: 0 2px 8px rgba(139, 92, 246, 0.25);
-            white-space: nowrap;
+            padding:8px 18px; background:var(--gradient); color:#fff; border:none; border-radius:20px; cursor:pointer; font-weight:600;
+            font-size:13px; transition:var(--transition); box-shadow:0 2px 8px rgba(139,92,246,0.25); white-space:nowrap;
         }
-        .call-btn:hover {
-            box-shadow: 0 4px 16px rgba(139, 92, 246, 0.4);
-            transform: translateY(-1px);
-        }
-        .call-btn.in-call {
-            background: var(--danger);
-            box-shadow: 0 2px 8px rgba(239, 68, 68, 0.3);
-        }
+        .call-btn:hover { box-shadow:0 4px 16px rgba(139,92,246,0.4); transform:translateY(-1px); }
+        .call-btn.in-call { background:var(--danger); box-shadow:0 2px 8px rgba(239,68,68,0.3); }
         #messages-container {
-            flex: 1;
-            overflow-y: auto;
-            padding: 16px 20px;
-            display: flex;
-            flex-direction: column;
-            gap: 4px;
-            background: 
-                radial-gradient(ellipse at 50% 50%, rgba(139, 92, 246, 0.02) 0%, transparent 70%);
+            flex:1; overflow-y:auto; padding:16px 20px; display:flex; flex-direction:column; gap:4px;
+            background:radial-gradient(ellipse at 50% 50%, rgba(139,92,246,0.02) 0%, transparent 70%);
         }
-        #messages-container::-webkit-scrollbar {
-            width: 4px;
-        }
-        #messages-container::-webkit-scrollbar-thumb {
-            background: #3a3a50;
-            border-radius: 4px;
-        }
-        .message {
-            max-width: 72%;
-            padding: 10px 15px;
-            border-radius: 18px;
-            font-size: 14px;
-            line-height: 1.45;
-            word-break: break-word;
-            animation: msgIn 0.25s ease;
-        }
-        @keyframes msgIn {
-            from {
-                opacity: 0;
-                transform: translateY(10px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-        .message.sent {
-            align-self: flex-end;
-            background: var(--gradient-dark);
-            color: #fff;
-            border-bottom-right-radius: 6px;
-            box-shadow: 0 2px 8px rgba(139, 92, 246, 0.2);
-        }
-        .message.received {
-            align-self: flex-start;
-            background: var(--surface2);
-            border-bottom-left-radius: 6px;
-            border: 1px solid var(--border);
-        }
-        .message .msg-time {
-            font-size: 10px;
-            opacity: 0.65;
-            margin-top: 4px;
-            text-align: right;
-        }
-        #input-area {
-            padding: 12px 20px;
-            border-top: 1px solid var(--border);
-            display: flex;
-            gap: 10px;
-            background: rgba(0, 0, 0, 0.1);
-        }
+        #messages-container::-webkit-scrollbar { width:4px; }
+        #messages-container::-webkit-scrollbar-thumb { background:#3a3a50; border-radius:4px; }
+        .message { max-width:72%; padding:10px 15px; border-radius:18px; font-size:14px; line-height:1.45; word-break:break-word; animation:msgIn 0.25s ease; }
+        @keyframes msgIn { from { opacity:0; transform:translateY(10px); } to { opacity:1; transform:translateY(0); } }
+        .message.sent { align-self:flex-end; background:var(--gradient-dark); color:#fff; border-bottom-right-radius:6px; box-shadow:0 2px 8px rgba(139,92,246,0.2); }
+        .message.received { align-self:flex-start; background:var(--surface2); border-bottom-left-radius:6px; border:1px solid var(--border); }
+        .message .msg-time { font-size:10px; opacity:0.65; margin-top:4px; text-align:right; }
+        #input-area { padding:12px 20px; border-top:1px solid var(--border); display:flex; gap:10px; background:rgba(0,0,0,0.1); }
         #input-area input {
-            flex: 1;
-            padding: 11px 18px;
-            background: var(--surface2);
-            border: 1.5px solid var(--border);
-            border-radius: 24px;
-            color: var(--text);
-            font-size: 14px;
-            outline: none;
-            transition: var(--transition);
+            flex:1; padding:11px 18px; background:var(--surface2); border:1.5px solid var(--border); border-radius:24px; color:var(--text);
+            font-size:14px; outline:none; transition:var(--transition);
         }
-        #input-area input:focus {
-            border-color: var(--accent);
-            box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.1);
-        }
+        #input-area input:focus { border-color:var(--accent); box-shadow:0 0 0 3px rgba(139,92,246,0.1); }
         #input-area button {
-            width: 44px;
-            height: 44px;
-            border-radius: 50%;
-            background: var(--gradient);
-            color: #fff;
-            border: none;
-            cursor: pointer;
-            font-size: 18px;
-            transition: var(--transition);
-            flex-shrink: 0;
-            box-shadow: 0 2px 8px rgba(139, 92, 246, 0.3);
+            width:44px; height:44px; border-radius:50%; background:var(--gradient); color:#fff; border:none; cursor:pointer; font-size:18px;
+            transition:var(--transition); flex-shrink:0; box-shadow:0 2px 8px rgba(139,92,246,0.3);
         }
-        #input-area button:hover {
-            transform: scale(1.05);
-            box-shadow: 0 4px 16px rgba(139, 92, 246, 0.45);
-        }
-        #input-area button:active {
-            transform: scale(0.94);
-        }
-        .no-chat {
-            flex: 1;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--text2);
-            font-size: 14px;
-            flex-direction: column;
-            gap: 10px;
-        }
-        .no-chat .no-chat-icon {
-            font-size: 48px;
-            opacity: 0.5;
-        }
-
+        #input-area button:hover { transform:scale(1.05); box-shadow:0 4px 16px rgba(139,92,246,0.45); }
+        #input-area button:active { transform:scale(0.94); }
+        .no-chat { flex:1; display:flex; align-items:center; justify-content:center; color:var(--text2); font-size:14px; flex-direction:column; gap:10px; }
         /* === CALL OVERLAY === */
         #call-overlay {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(10, 10, 18, 0.92);
-            backdrop-filter: blur(8px);
-            -webkit-backdrop-filter: blur(8px);
-            z-index: 100;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            gap: 24px;
+            display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(10,10,18,0.92);
+            backdrop-filter:blur(8px); -webkit-backdrop-filter:blur(8px); z-index:100; flex-direction:column; align-items:center; justify-content:center; gap:24px;
         }
-        #call-overlay.active {
-            display: flex;
-        }
+        #call-overlay.active { display:flex; }
         #call-overlay .call-avatar {
-            width: 80px;
-            height: 80px;
-            border-radius: 50%;
-            background: var(--gradient);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 36px;
-            font-weight: 700;
-            color: #fff;
-            box-shadow: 0 8px 32px rgba(139, 92, 246, 0.4);
-            animation: pulse 2s infinite;
+            width:80px; height:80px; border-radius:50%; background:var(--gradient); display:flex; align-items:center; justify-content:center;
+            font-size:36px; font-weight:700; color:#fff; box-shadow:0 8px 32px rgba(139,92,246,0.4); animation:pulse 2s infinite;
         }
-        @keyframes pulse {
-            0%,
-            100% {
-                box-shadow: 0 8px 32px rgba(139, 92, 246, 0.4);
-            }
-            50% {
-                box-shadow: 0 8px 48px rgba(139, 92, 246, 0.7);
-            }
-        }
-        #call-overlay .call-info {
-            font-size: 20px;
-            font-weight: 600;
-        }
-        #call-overlay .call-status {
-            font-size: 13px;
-            color: var(--accent2);
-            min-height: 20px;
-        }
-        #call-overlay .call-controls {
-            display: flex;
-            gap: 20px;
-            align-items: center;
-            margin-top: 8px;
-        }
-        #call-overlay .call-controls button {
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            border: none;
-            cursor: pointer;
-            font-size: 24px;
-            transition: var(--transition);
-        }
-        .btn-hangup {
-            background: var(--danger);
-            color: #fff;
-            box-shadow: 0 4px 16px rgba(239, 68, 68, 0.4);
-        }
-        .btn-hangup:hover {
-            background: #dc2626;
-            transform: scale(1.08);
-        }
-        .btn-mute {
-            background: var(--surface2);
-            color: var(--text);
-            border: 2px solid var(--border) !important;
-        }
-        .btn-mute.muted {
-            background: var(--danger);
-            border-color: var(--danger) !important;
-            color: #fff;
-        }
-        #volume-control-area {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            background: var(--surface2);
-            padding: 12px 22px;
-            border-radius: 28px;
-            border: 1px solid var(--border);
-        }
-        #volume-control-area label {
-            font-size: 16px;
-        }
-        #volume-slider {
-            -webkit-appearance: none;
-            width: 150px;
-            height: 6px;
-            border-radius: 3px;
-            background: #3a3a50;
-            outline: none;
-            cursor: pointer;
-        }
-        #volume-slider::-webkit-slider-thumb {
-            -webkit-appearance: none;
-            width: 22px;
-            height: 22px;
-            border-radius: 50%;
-            background: var(--gradient);
-            cursor: pointer;
-            box-shadow: 0 2px 8px rgba(139, 92, 246, 0.4);
-        }
-        #volume-label {
-            font-size: 13px;
-            font-weight: 600;
-            width: 42px;
-            text-align: center;
-            color: var(--accent2);
-        }
-
+        @keyframes pulse { 0%,100%{ box-shadow:0 8px 32px rgba(139,92,246,0.4); } 50%{ box-shadow:0 8px 48px rgba(139,92,246,0.7); } }
+        #call-overlay .call-info { font-size:20px; font-weight:600; }
+        #call-overlay .call-status { font-size:13px; color:var(--accent2); min-height:20px; }
+        #call-overlay .call-controls { display:flex; gap:20px; align-items:center; margin-top:8px; }
+        #call-overlay .call-controls button { width:60px; height:60px; border-radius:50%; border:none; cursor:pointer; font-size:24px; transition:var(--transition); }
+        .btn-hangup { background:var(--danger); color:#fff; box-shadow:0 4px 16px rgba(239,68,68,0.4); }
+        .btn-hangup:hover { background:#dc2626; transform:scale(1.08); }
+        .btn-mute { background:var(--surface2); color:var(--text); border:2px solid var(--border)!important; }
+        .btn-mute.muted { background:var(--danger); border-color:var(--danger)!important; color:#fff; }
+        #volume-control-area { display:flex; align-items:center; gap:12px; background:var(--surface2); padding:12px 22px; border-radius:28px; border:1px solid var(--border); }
+        #volume-slider { -webkit-appearance:none; width:150px; height:6px; border-radius:3px; background:#3a3a50; outline:none; cursor:pointer; }
+        #volume-slider::-webkit-slider-thumb { -webkit-appearance:none; width:22px; height:22px; border-radius:50%; background:var(--gradient); cursor:pointer; box-shadow:0 2px 8px rgba(139,92,246,0.4); }
+        #volume-label { font-size:13px; font-weight:600; width:42px; text-align:center; color:var(--accent2); }
         /* === TOAST === */
         #toast {
-            position: fixed;
-            bottom: 30px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: #1f1f36;
-            color: #fff;
-            padding: 11px 24px;
-            border-radius: 24px;
-            font-size: 13px;
-            z-index: 200;
-            opacity: 0;
-            transition: opacity 0.3s;
-            pointer-events: none;
-            border: 1px solid var(--border);
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+            position:fixed; bottom:30px; left:50%; transform:translateX(-50%); background:#1f1f36; color:#fff; padding:11px 24px;
+            border-radius:24px; font-size:13px; z-index:200; opacity:0; transition:opacity 0.3s; pointer-events:none; border:1px solid var(--border); box-shadow:0 8px 24px rgba(0,0,0,0.5);
         }
-        #toast.show {
-            opacity: 1;
-        }
-
+        #toast.show { opacity:1; }
         /* === RESPONSIVE === */
-        @media (max-width: 650px) {
-            #app {
-                height: 100vh;
-                max-height: 100vh;
-                border-radius: 0;
-                max-width: 100%;
-            }
-            #sidebar {
-                width: 100%;
-                min-width: 100%;
-            }
-            #main-screen.chat-open #sidebar {
-                display: none;
-            }
-            #main-screen.chat-open #chat-area {
-                display: flex;
-            }
-            #chat-area {
-                display: none;
-            }
-            #chat-area.active-mobile {
-                display: flex;
-            }
-            .back-btn {
-                display: inline-flex !important;
-            }
-            #call-overlay {
-                gap: 16px;
-            }
-            #volume-control-area {
-                padding: 10px 16px;
-            }
-            #volume-slider {
-                width: 100px;
-            }
+        @media (max-width:650px) {
+            #app { height:100vh; max-height:100vh; border-radius:0; max-width:100%; }
+            #sidebar { width:100%; min-width:100%; }
+            #main-screen.chat-open #sidebar { display:none; }
+            #main-screen.chat-open #chat-area { display:flex; }
+            #chat-area { display:none; }
+            #chat-area.active-mobile { display:flex; }
+            .back-btn { display:inline-flex!important; }
+            #volume-slider { width:100px; }
         }
-        .back-btn {
-            display: none;
-            background: none;
-            border: none;
-            color: var(--accent2);
-            font-size: 22px;
-            cursor: pointer;
-            padding: 4px 8px;
-            align-items: center;
-            justify-content: center;
-            transition: var(--transition);
-        }
-        .back-btn:hover {
-            color: #fff;
-        }
+        .back-btn { display:none; background:none; border:none; color:var(--accent2); font-size:22px; cursor:pointer; padding:4px 8px; align-items:center; justify-content:center; transition:var(--transition); }
+        .back-btn:hover { color:#fff; }
     </style>
 </head>
 <body>
-
-    <div id="app">
-        <!-- AUTH SCREEN -->
-        <div id="auth-screen">
-            <div class="logo-container">
-                <div class="logo-icon">💬</div>
-            </div>
-            <div class="logo">Lumen</div>
-            <div class="subtitle">Бесплатный мессенджер<br>с сохранением истории и звонками</div>
-            <input type="text" id="auth-nickname" placeholder="Никнейм" maxlength="20" autocomplete="username">
-            <input type="password" id="auth-password" placeholder="Пароль (мин. 6 символов)" maxlength="50" autocomplete="current-password">
-            <div class="auth-error" id="auth-error"></div>
-            <button class="btn btn-primary" id="btn-login">🚀 Войти</button>
-            <button class="btn btn-secondary" id="btn-register">✨ Создать аккаунт</button>
-            <div class="divider">или</div>
-            <button class="btn btn-google" id="btn-google">
-                <svg width="18" height="18" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 01-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
-                Войти через Google
-            </button>
-            <div class="auth-hint">Данные хранятся в облаке Supabase • Звонки P2P через WebRTC</div>
+<div id="app">
+    <!-- AUTH SCREEN -->
+    <div id="auth-screen">
+        <div class="logo-icon">💬</div>
+        <div class="logo">Lumen</div>
+        <div class="subtitle">Бесплатный мессенджер<br>с сохранением истории и звонками</div>
+        <div class="auth-tabs">
+            <button class="auth-tab active" id="tab-login">Вход</button>
+            <button class="auth-tab" id="tab-register">Регистрация</button>
         </div>
+        <!-- Поля входа -->
+        <div id="login-fields">
+            <input type="text" id="login-identity" placeholder="Никнейм или Email" autocomplete="username">
+            <input type="password" id="login-password" placeholder="Пароль" autocomplete="current-password">
+        </div>
+        <!-- Поля регистрации -->
+        <div id="reg-fields">
+            <input type="email" id="reg-email" placeholder="Email (настоящий)" autocomplete="email">
+            <input type="text" id="reg-nickname" placeholder="Никнейм (как вас увидят)" maxlength="20" autocomplete="off">
+            <input type="password" id="reg-password" placeholder="Пароль (мин. 6 символов)" maxlength="50" autocomplete="new-password">
+        </div>
+        <div class="auth-error" id="auth-error"></div>
+        <button class="btn btn-primary" id="btn-submit">🚀 Войти</button>
+        <div class="auth-hint">Входите по никнейму или email • Данные в облаке Supabase</div>
+    </div>
 
-        <!-- MAIN SCREEN -->
-        <div id="main-screen">
-            <div id="sidebar">
-                <div id="sidebar-header">
-                    <div class="user-info">
-                        <div class="avatar" id="my-avatar">?</div>
-                        <span class="username" id="my-username"></span>
-                    </div>
-                    <button class="logout-btn" id="btn-logout">Выйти</button>
-                </div>
-                <div class="sidebar-section-title">💬 Контакты</div>
-                <div id="contacts-list"></div>
-                <div id="add-contact-area">
-                    <input type="text" id="add-contact-input" placeholder="Никнейм для добавления...">
-                    <button id="btn-add-contact">＋</button>
-                </div>
+    <!-- MAIN SCREEN -->
+    <div id="main-screen">
+        <div id="sidebar">
+            <div id="sidebar-header">
+                <div class="user-info"><div class="avatar" id="my-avatar">?</div><span class="username" id="my-username"></span></div>
+                <button class="logout-btn" id="btn-logout">Выйти</button>
             </div>
-
-            <div id="chat-area">
-                <div id="chat-header" style="display:none;">
-                    <button class="back-btn" id="btn-back">←</button>
-                    <div class="chat-partner-wrap">
-                        <div class="chat-partner" id="chat-partner-name"></div>
-                        <div class="chat-partner-status" id="chat-partner-status"></div>
-                    </div>
-                    <button class="call-btn" id="btn-call">📞 Звонок</button>
-                </div>
-                <div id="messages-container"></div>
-                <div class="no-chat" id="no-chat-placeholder">
-                    <div class="no-chat-icon">💬</div>
-                    <div>Выберите контакт, чтобы начать общение</div>
-                </div>
-                <div id="input-area" style="display:none;">
-                    <input type="text" id="message-input" placeholder="Напишите сообщение..." maxlength="2000" autocomplete="off">
-                    <button id="btn-send">➤</button>
-                </div>
+            <div class="sidebar-section-title">💬 Контакты</div>
+            <div id="contacts-list"></div>
+            <div id="add-contact-area">
+                <input type="text" id="add-contact-input" placeholder="Никнейм для добавления..."><button id="btn-add-contact">＋</button>
+            </div>
+        </div>
+        <div id="chat-area">
+            <div id="chat-header" style="display:none;">
+                <button class="back-btn" id="btn-back">←</button>
+                <div class="chat-partner-wrap"><div class="chat-partner" id="chat-partner-name"></div><div class="chat-partner-status" id="chat-partner-status"></div></div>
+                <button class="call-btn" id="btn-call">📞 Звонок</button>
+            </div>
+            <div id="messages-container"></div>
+            <div class="no-chat" id="no-chat-placeholder"><div style="font-size:48px;opacity:0.5;">💬</div><div>Выберите контакт, чтобы начать общение</div></div>
+            <div id="input-area" style="display:none;">
+                <input type="text" id="message-input" placeholder="Напишите сообщение..." maxlength="2000" autocomplete="off"><button id="btn-send">➤</button>
             </div>
         </div>
     </div>
+</div>
 
-    <!-- CALL OVERLAY -->
-    <div id="call-overlay">
-        <div class="call-avatar" id="call-avatar-display">?</div>
-        <div class="call-info" id="call-partner-display"></div>
-        <div class="call-status" id="call-status">Соединение...</div>
-        <div id="volume-control-area">
-            <label>🔊</label>
-            <input type="range" id="volume-slider" min="0" max="100" value="50" step="1">
-            <span id="volume-label">50%</span>
-        </div>
-        <div class="call-controls">
-            <button class="btn-mute" id="btn-toggle-mic" title="Вкл/выкл микрофон">🎤</button>
-            <button class="btn-hangup" id="btn-hangup">📞</button>
-        </div>
+<!-- CALL OVERLAY -->
+<div id="call-overlay">
+    <div class="call-avatar" id="call-avatar-display">?</div>
+    <div class="call-info" id="call-partner-display"></div>
+    <div class="call-status" id="call-status">Соединение...</div>
+    <div id="volume-control-area">
+        <label>🔊</label><input type="range" id="volume-slider" min="0" max="100" value="50" step="1"><span id="volume-label">50%</span>
     </div>
+    <div class="call-controls">
+        <button class="btn-mute" id="btn-toggle-mic" title="Вкл/выкл микрофон">🎤</button>
+        <button class="btn-hangup" id="btn-hangup">📞</button>
+    </div>
+</div>
 
-    <!-- TOAST -->
-    <div id="toast"></div>
+<!-- TOAST -->
+<div id="toast"></div>
 
-    <script>
-        (function() {
-            // ==================== КОНФИГУРАЦИЯ ====================
-            // ЗАМЕНИТЕ НА СВОИ ЗНАЧЕНИЯ ПОСЛЕ СОЗДАНИЯ ПРОЕКТА НА SUPABASE.COM
-            const SUPABASE_URL = 'https://wiuhicakznpyfaxxvnjj.supabase.co'; // ← ЗАМЕНИТЬ
-            const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndpdWhpY2Frem5weWZheHh2bmpqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODU0Nzg2MjksImV4cCI6MjEwMTA1NDYyOX0.u5fa1Lp7MaqfVMQFxEZ0vdsqRvzyEgRg2RjUJugrbFk'; // ← ЗАМЕНИТЬ
+<script>
+(function(){
+// ==================== КОНФИГ ====================
+const SUPABASE_URL = 'https://wiuhicakznpyfaxxvnjj.supabase.co';
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndpdWhpY2Frem5weWZheHh2bmpqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTE4Mzg0ODAsImV4cCI6MjA2NzQxNDQ4MH0.qNe17YKNvuTqUDZPhu13PQ8xYJ-3MmnJcVgL5Svn9AQ';
+const PEERJS_HOST='0.peerjs.com', PEERJS_PORT=443, PEERJS_SECURE=true;
+const supabase=window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+const $=s=>document.querySelector(s);
 
-            // PeerJS сервер (можно заменить на свой)
-            const PEERJS_HOST = '0.peerjs.com';
-            const PEERJS_PORT = 443;
-            const PEERJS_SECURE = true;
+// ==================== DOM ====================
+const authScreen=$('#auth-screen'), mainScreen=$('#main-screen');
+const loginIdentity=$('#login-identity'), loginPassword=$('#login-password');
+const regEmail=$('#reg-email'), regNickname=$('#reg-nickname'), regPassword=$('#reg-password');
+const regFields=$('#reg-fields'), loginFields=$('#login-fields');
+const tabLogin=$('#tab-login'), tabRegister=$('#tab-register');
+const authError=$('#auth-error'), btnSubmit=$('#btn-submit');
+const btnLogout=$('#btn-logout'), myAvatar=$('#my-avatar'), myUsername=$('#my-username');
+const contactsList=$('#contacts-list'), addContactInput=$('#add-contact-input'), btnAddContact=$('#btn-add-contact');
+const chatHeader=$('#chat-header'), chatPartnerName=$('#chat-partner-name'), chatPartnerStatus=$('#chat-partner-status');
+const messagesContainer=$('#messages-container'), noChatPlaceholder=$('#no-chat-placeholder'), inputArea=$('#input-area');
+const messageInput=$('#message-input'), btnSend=$('#btn-send'), btnCall=$('#btn-call'), btnBack=$('#btn-back');
+const callOverlay=$('#call-overlay'), callAvatarDisplay=$('#call-avatar-display'), callPartnerDisplay=$('#call-partner-display'), callStatus=$('#call-status');
+const volumeSlider=$('#volume-slider'), volumeLabel=$('#volume-label'), btnToggleMic=$('#btn-toggle-mic'), btnHangup=$('#btn-hangup'), toast=$('#toast');
 
-            // ==================== ИНИЦИАЛИЗАЦИЯ ====================
-            const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+// ==================== СОСТОЯНИЕ ====================
+let currentUser=null, currentContactId=null, currentContactUsername=null, contacts=[], messagesCache={};
+let peer=null, currentCall=null, localStream=null, remoteAudio=null, isMuted=false;
+let contactsStatuses={}, peerIdToContactId={}, presenceChannel=null, messagesSubscription=null, presenceInterval=null;
+let authMode='login'; // 'login' | 'register'
+let toastTimer;
 
-            const $ = (sel) => document.querySelector(sel);
+// ==================== TOAST ====================
+function showToast(m){toast.textContent=m;toast.classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>toast.classList.remove('show'),2800);}
+function escapeHtml(s){const d=document.createElement('div');d.textContent=s;return d.innerHTML;}
+function getInitials(n){return (n||'?')[0].toUpperCase();}
+function formatTime(i){return new Date(i).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});}
 
-            // DOM элементы
-            const authScreen = $('#auth-screen');
-            const mainScreen = $('#main-screen');
-            const authNickname = $('#auth-nickname');
-            const authPassword = $('#auth-password');
-            const authError = $('#auth-error');
-            const btnLogin = $('#btn-login');
-            const btnRegister = $('#btn-register');
-            const btnGoogle = $('#btn-google');
-            const btnLogout = $('#btn-logout');
-            const myAvatar = $('#my-avatar');
-            const myUsername = $('#my-username');
-            const contactsList = $('#contacts-list');
-            const addContactInput = $('#add-contact-input');
-            const btnAddContact = $('#btn-add-contact');
-            const chatHeader = $('#chat-header');
-            const chatPartnerName = $('#chat-partner-name');
-            const chatPartnerStatus = $('#chat-partner-status');
-            const messagesContainer = $('#messages-container');
-            const noChatPlaceholder = $('#no-chat-placeholder');
-            const inputArea = $('#input-area');
-            const messageInput = $('#message-input');
-            const btnSend = $('#btn-send');
-            const btnCall = $('#btn-call');
-            const btnBack = $('#btn-back');
-            const callOverlay = $('#call-overlay');
-            const callAvatarDisplay = $('#call-avatar-display');
-            const callPartnerDisplay = $('#call-partner-display');
-            const callStatus = $('#call-status');
-            const volumeSlider = $('#volume-slider');
-            const volumeLabel = $('#volume-label');
-            const btnToggleMic = $('#btn-toggle-mic');
-            const btnHangup = $('#btn-hangup');
-            const toast = $('#toast');
+// ==================== SUPABASE: ПРОФИЛИ ====================
+async function upsertProfile(uid,nick){await supabase.from('lumen_profiles').upsert({id:uid,nickname:nick,updated_at:new Date().toISOString()},{onConflict:'id'});}
+async function findProfileByNickname(nick){const{data}=await supabase.from('lumen_profiles').select('*').ilike('nickname',nick.trim()).limit(1);return data?.[0]||null;}
+async function findProfileByUserId(uid){const{data}=await supabase.from('lumen_profiles').select('*').eq('id',uid).single();return data||null;}
 
-            // Состояние
-            let currentUser = null;
-            let currentContactId = null;
-            let currentContactUsername = null;
-            let contacts = [];
-            let messagesCache = {};
-            let peer = null;
-            let currentCall = null;
-            let localStream = null;
-            let remoteAudio = null;
-            let isMuted = false;
-            let contactsStatuses = {};
-            let peerIdToContactId = {};
-            let presenceChannel = null;
-            let messagesSubscription = null;
-            let presenceInterval = null;
+// ==================== SUPABASE: КОНТАКТЫ ====================
+async function loadContacts(){
+    if(!currentUser)return;
+    const{data}=await supabase.from('lumen_contacts').select('contact_id,profiles!lumen_contacts_contact_id_fkey(nickname)').eq('user_id',currentUser.id);
+    contacts=(data||[]).map(r=>({contact_id:r.contact_id,nickname:r.profiles?.nickname||'Неизвестный'}));
+    renderContacts();
+}
+async function addContact(cid){
+    if(cid===currentUser.id){showToast('Нельзя добавить себя');return;}
+    if(contacts.find(c=>c.contact_id===cid)){showToast('Уже в контактах');return;}
+    await supabase.from('lumen_contacts').insert({user_id:currentUser.id,contact_id:cid});
+    await loadContacts();showToast('✅ Добавлен');
+}
+function renderContacts(){
+    contactsList.innerHTML='';
+    if(!contacts.length){contactsList.innerHTML='<div style="padding:30px;text-align:center;color:var(--text2);font-size:13px;">Список пуст</div>';return;}
+    contacts.forEach(c=>{
+        const status=contactsStatuses[c.contact_id]||'offline';
+        const d=document.createElement('div');d.className='contact-item'+(c.contact_id===currentContactId?' active':'');
+        d.innerHTML=`<div class="contact-avatar">${getInitials(c.nickname)}<div class="status-dot ${status}"></div></div><div class="contact-info"><div class="contact-name">${escapeHtml(c.nickname)}</div><div class="contact-status">${status==='online'?'🟢 В сети':'⚫ Не в сети'}</div></div>`;
+        d.addEventListener('click',()=>openChat(c.contact_id,c.nickname));contactsList.appendChild(d);
+    });
+}
 
-            // ==================== TOAST ====================
-            let toastTimer;
+// ==================== SUPABASE: СООБЩЕНИЯ ====================
+async function loadMessages(){
+    if(!currentContactId||!currentUser)return;
+    const{data}=await supabase.from('lumen_messages').select('*').or(`and(sender_id.eq.${currentUser.id},receiver_id.eq.${currentContactId}),and(sender_id.eq.${currentContactId},receiver_id.eq.${currentUser.id})`).order('created_at',{ascending:true}).limit(300);
+    messagesCache[currentContactId]=data||[];renderMessages();
+}
+function renderMessages(){
+    messagesContainer.innerHTML='';
+    const msgs=messagesCache[currentContactId]||[];
+    if(!msgs.length){messagesContainer.innerHTML='<div style="text-align:center;color:var(--text2);padding:50px;font-size:13px;">💬 Нет сообщений</div>';return;}
+    msgs.forEach(m=>{
+        const d=document.createElement('div');d.className='message '+(m.sender_id===currentUser.id?'sent':'received');
+        d.innerHTML=`${escapeHtml(m.text)}<div class="msg-time">${formatTime(m.created_at)}</div>`;messagesContainer.appendChild(d);
+    });
+    messagesContainer.scrollTop=messagesContainer.scrollHeight;
+}
+async function sendMessage(text){
+    if(!text.trim()||!currentContactId||!currentUser)return;
+    await supabase.from('lumen_messages').insert({sender_id:currentUser.id,receiver_id:currentContactId,text:text.trim(),created_at:new Date().toISOString()});
+}
 
-            function showToast(msg) {
-                toast.textContent = msg;
-                toast.classList.add('show');
-                clearTimeout(toastTimer);
-                toastTimer = setTimeout(() => toast.classList.remove('show'), 2800);
+function subscribeToMessages(){
+    if(messagesSubscription)supabase.removeChannel(messagesSubscription);
+    if(!currentUser)return;
+    messagesSubscription=supabase.channel('msg_ch').on('postgres_changes',{event:'INSERT',schema:'public',table:'lumen_messages',filter:`receiver_id=eq.${currentUser.id}`},payload=>{
+        const msg=payload.new;
+        if(msg.sender_id===currentContactId){
+            if(!messagesCache[currentContactId])messagesCache[currentContactId]=[];
+            if(!messagesCache[currentContactId].some(m=>m.sender_id===msg.sender_id&&m.text===msg.text&&m.created_at===msg.created_at)){
+                messagesCache[currentContactId].push(msg);renderMessages();
             }
+        }
+    }).subscribe();
+}
 
-            // ==================== ХЕЛПЕРЫ ====================
-            function escapeHtml(str) {
-                const div = document.createElement('div');
-                div.textContent = str;
-                return div.innerHTML;
-            }
+// ==================== PRESENCE ====================
+function setupPresence(){
+    if(presenceChannel)supabase.removeChannel(presenceChannel);
+    if(!currentUser)return;
+    presenceChannel=supabase.channel('pres_ch',{config:{broadcast:{self:false}}});
+    presenceChannel.on('broadcast',{event:'presence_update'},payload=>{
+        const{userId,peerId,status,nickname}=payload.payload;
+        if(userId===currentUser.id)return;
+        contactsStatuses[userId]=status;if(peerId)peerIdToContactId[userId]=peerId;
+        renderContacts();if(userId===currentContactId)updateChatPartnerStatus();
+    });
+    presenceChannel.subscribe(s=>{if(s==='SUBSCRIBED')broadcastPresence();});
+}
+function broadcastPresence(){
+    if(!presenceChannel||!currentUser)return;
+    presenceChannel.send({type:'broadcast',event:'presence_update',payload:{userId:currentUser.id,peerId:peer?.id||null,status:'online',nickname:currentUser.user_metadata?.nickname||'User'}});
+}
+function broadcastOffline(){
+    if(!presenceChannel||!currentUser)return;
+    presenceChannel.send({type:'broadcast',event:'presence_update',payload:{userId:currentUser.id,peerId:null,status:'offline',nickname:currentUser.user_metadata?.nickname||'User'}});
+}
 
-            function getInitials(name) {
-                return (name || '?')[0].toUpperCase();
-            }
+// ==================== PEERJS / ЗВОНКИ ====================
+function setupPeer(){
+    if(!currentUser)return;if(peer)try{peer.destroy();}catch(e){}
+    peer=new Peer(currentUser.id,{host:PEERJS_HOST,port:PEERJS_PORT,secure:PEERJS_SECURE,debug:0});
+    peer.on('open',()=>broadcastPresence());
+    peer.on('call',async call=>{if(currentCall){call.close();return;}try{localStream=await navigator.mediaDevices.getUserMedia({audio:true});}catch(e){showToast('Нет микрофона');call.close();return;}call.answer(localStream);setupCallUI(call);});
+    peer.on('error',()=>{});
+    peer.on('disconnected',()=>peer.reconnect());
+}
+async function startCall(){
+    if(!currentContactId||!peer||currentCall)return;
+    try{localStream=await navigator.mediaDevices.getUserMedia({audio:true});}catch(e){showToast('Нет микрофона');return;}
+    const target=peerIdToContactId[currentContactId]||currentContactId;
+    const call=peer.call(target,localStream);if(!call){if(localStream){localStream.getTracks().forEach(t=>t.stop());localStream=null;}showToast('Абонент недоступен');return;}
+    setupCallUI(call);
+}
+function setupCallUI(call){
+    currentCall=call;callOverlay.classList.add('active');callAvatarDisplay.textContent=getInitials(currentContactUsername||'?');
+    callPartnerDisplay.textContent='📞 '+(currentContactUsername||'Собеседник');callStatus.textContent='Соединение...';callStatus.style.color='var(--accent2)';
+    volumeSlider.value=50;volumeLabel.textContent='50%';isMuted=false;btnToggleMic.classList.remove('muted');btnToggleMic.textContent='🎤';
+    if(localStream)localStream.getAudioTracks().forEach(t=>t.enabled=true);
+    btnCall.classList.add('in-call');btnCall.textContent='📞 В звонке';
+    call.on('stream',rs=>{
+        callStatus.textContent='🟢 Разговор';callStatus.style.color='var(--online)';
+        if(remoteAudio){remoteAudio.srcObject=null;remoteAudio.remove();}
+        remoteAudio=document.createElement('audio');remoteAudio.srcObject=rs;remoteAudio.autoplay=true;remoteAudio.playsInline=true;document.body.appendChild(remoteAudio);applyVolume();
+    });
+    call.on('close',()=>{endCallUI();showToast('Звонок завершён');});
+    call.on('error',()=>{callStatus.textContent='Ошибка';setTimeout(endCallUI,2000);});
+}
+function applyVolume(){
+    if(!remoteAudio)return;const v=parseInt(volumeSlider.value);let g;
+    const pts=[[0,0],[1,0.002],[25,0.1],[50,0.2],[75,0.5],[100,1.0]];
+    if(v<=0)g=0;else if(v>=100)g=1;else for(let i=0;i<pts.length-1;i++)if(v>=pts[i][0]&&v<=pts[i+1][0]){g=pts[i][1]+(v-pts[i][0])/(pts[i+1][0]-pts[i][0])*(pts[i+1][1]-pts[i][1]);break;}
+    remoteAudio.volume=Math.max(0,Math.min(1,g));
+}
+function toggleMute(){isMuted=!isMuted;if(localStream)localStream.getAudioTracks().forEach(t=>t.enabled=!isMuted);btnToggleMic.classList.toggle('muted',isMuted);btnToggleMic.textContent=isMuted?'🔇':'🎤';}
+function endCall(){if(currentCall)try{currentCall.close();}catch(e){}endCallUI();}
+function endCallUI(){
+    callOverlay.classList.remove('active');if(remoteAudio){remoteAudio.srcObject=null;remoteAudio.remove();remoteAudio=null;}
+    if(localStream){localStream.getTracks().forEach(t=>t.stop());localStream=null;}
+    currentCall=null;isMuted=false;btnToggleMic.classList.remove('muted');btnToggleMic.textContent='🎤';
+    btnCall.classList.remove('in-call');btnCall.textContent='📞 Звонок';
+}
 
-            function formatTime(isoString) {
-                return new Date(isoString).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-            }
+// ==================== ЧАТ ====================
+async function openChat(cid,cnick){
+    currentContactId=cid;currentContactUsername=cnick;chatPartnerName.textContent=cnick;updateChatPartnerStatus();
+    chatHeader.style.display='flex';inputArea.style.display='flex';noChatPlaceholder.style.display='none';
+    mainScreen.classList.add('chat-open');document.getElementById('chat-area').classList.add('active-mobile');
+    btnCall.classList.toggle('in-call',!!currentCall);btnCall.textContent=currentCall?'📞 В звонке':'📞 Звонок';
+    renderContacts();await loadMessages();messageInput.focus();
+}
+function updateChatPartnerStatus(){
+    if(!currentContactId)return;const s=contactsStatuses[currentContactId]||'offline';
+    chatPartnerStatus.textContent=s==='online'?'🟢 В сети':'⚫ Не в сети';chatPartnerStatus.style.color=s==='online'?'var(--online)':'var(--text2)';
+}
 
-            // ==================== SUPABASE: ПРОФИЛИ ====================
-            async function upsertProfile(userId, nickname) {
-                const { error } = await supabase
-                    .from('lumen_profiles')
-                    .upsert({ id: userId, nickname, updated_at: new Date().toISOString() }, { onConflict: 'id' });
-                if (error) console.error('upsertProfile:', error);
-            }
+// ==================== АВТОРИЗАЦИЯ ====================
+// Вход: ищем профиль по никнейму → получаем email → входим через Supabase
+async function signInByIdentity(identity, password) {
+    // Определяем: email или никнейм
+    const isEmail = identity.includes('@');
+    let email = identity.trim();
 
-            async function findProfileByNickname(nickname) {
-                const { data } = await supabase
-                    .from('lumen_profiles')
-                    .select('*')
-                    .ilike('nickname', nickname.trim())
-                    .limit(1);
-                return data?.[0] || null;
-            }
+    if (!isEmail) {
+        // Ищем профиль по никнейму
+        const profile = await findProfileByNickname(identity.trim());
+        if (!profile) throw new Error('Пользователь с таким никнеймом не найден');
+        // Получаем email пользователя (он хранится в Supabase Auth, не в profiles)
+        // Но мы не можем достать чужой email. Поэтому ищем через нашу таблицу profiles + auth.
+        // Решение: хранить email в profiles тоже.
+        if (!profile.email) throw new Error('Не удалось определить email. Войдите по email.');
+        email = profile.email;
+    }
 
-            // ==================== SUPABASE: КОНТАКТЫ ====================
-            async function loadContacts() {
-                if (!currentUser) return;
-                const { data, error } = await supabase
-                    .from('lumen_contacts')
-                    .select('contact_id, profiles!lumen_contacts_contact_id_fkey(nickname)')
-                    .eq('user_id', currentUser.id);
-                if (error) { console.error('loadContacts:', error); return; }
-                contacts = (data || []).map(row => ({
-                    contact_id: row.contact_id,
-                    nickname: row.profiles?.nickname || 'Неизвестный'
-                }));
-                renderContacts();
-            }
+    const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+    if (error) throw error;
+    if (data.user) {
+        await upsertProfile(data.user.id, data.user.user_metadata?.nickname || email.split('@')[0]);
+    }
+    return data;
+}
 
-            async function addContact(contactUserId) {
-                if (contactUserId === currentUser.id) { showToast('Нельзя добавить самого себя'); return; }
-                if (contacts.find(c => c.contact_id === contactUserId)) { showToast('Контакт уже в списке'); return; }
-                const { error } = await supabase
-                    .from('lumen_contacts')
-                    .insert({ user_id: currentUser.id, contact_id: contactUserId });
-                if (error) { console.error('addContact:', error);
-                    showToast('Ошибка при добавлении'); return; }
-                await loadContacts();
-                showToast('✅ Контакт добавлен');
-            }
+async function signUp(email, password, nickname) {
+    const { data, error } = await supabase.auth.signUp({
+        email: email.trim(),
+        password,
+        options: { data: { nickname } }
+    });
+    if (error) throw error;
+    if (data.user) {
+        // Сохраняем email в profiles для быстрого входа по нику
+        await supabase.from('lumen_profiles').upsert({
+            id: data.user.id,
+            nickname,
+            email: email.trim(),
+            updated_at: new Date().toISOString()
+        }, { onConflict: 'id' });
+    }
+    return data;
+}
 
-            function renderContacts() {
-                contactsList.innerHTML = '';
-                if (contacts.length === 0) {
-                    contactsList.innerHTML = `
-                <div style="padding:30px 20px;text-align:center;color:var(--text2);font-size:13px;line-height:1.6;">
-                  Список контактов пуст<br>
-                  <span style="font-size:11px;opacity:0.7;">Добавьте собеседника по никнейму</span>
-                </div>`;
-                    return;
-                }
-                contacts.forEach(c => {
-                    const status = contactsStatuses[c.contact_id] || 'offline';
-                    const div = document.createElement('div');
-                    div.className = 'contact-item' + (c.contact_id === currentContactId ? ' active' : '');
-                    div.innerHTML = `
-                <div class="contact-avatar">
-                  ${getInitials(c.nickname)}
-                  <div class="status-dot ${status}"></div>
-                </div>
-                <div class="contact-info">
-                  <div class="contact-name">${escapeHtml(c.nickname)}</div>
-                  <div class="contact-status">${status === 'online' ? '🟢 В сети' : '⚫ Не в сети'}</div>
-                </div>`;
-                    div.addEventListener('click', () => openChat(c.contact_id, c.nickname));
-                    contactsList.appendChild(div);
-                });
-            }
+// ==================== ГЛАВНЫЙ ПОТОК ====================
+async function onUserReady(user) {
+    currentUser = user;
+    if (!user) {
+        authScreen.style.display='flex'; mainScreen.classList.remove('active'); broadcastOffline();
+        if(presenceChannel){supabase.removeChannel(presenceChannel);presenceChannel=null;}
+        if(messagesSubscription){supabase.removeChannel(messagesSubscription);messagesSubscription=null;}
+        if(peer){peer.destroy();peer=null;} if(presenceInterval){clearInterval(presenceInterval);presenceInterval=null;}
+        endCallUI(); contacts=[]; currentContactId=null; currentContactUsername=null; messagesCache={};
+        contactsList.innerHTML=''; chatHeader.style.display='none'; inputArea.style.display='none'; noChatPlaceholder.style.display='flex';
+        messagesContainer.innerHTML=''; document.getElementById('chat-area').classList.remove('active-mobile'); mainScreen.classList.remove('chat-open');
+        return;
+    }
+    const nick = user.user_metadata?.nickname || user.email?.split('@')[0] || 'User';
+    await upsertProfile(user.id, nick);
+    authScreen.style.display='none'; mainScreen.classList.add('active');
+    myAvatar.textContent=getInitials(nick); myUsername.textContent=nick;
+    await loadContacts(); setupPeer(); setupPresence(); subscribeToMessages(); broadcastPresence();
+    if(presenceInterval)clearInterval(presenceInterval);
+    presenceInterval=setInterval(()=>{if(currentUser&&presenceChannel)broadcastPresence();},40000);
+}
 
-            // ==================== SUPABASE: СООБЩЕНИЯ ====================
-            async function loadMessages() {
-                if (!currentContactId || !currentUser) return;
-                const { data, error } = await supabase
-                    .from('lumen_messages')
-                    .select('*')
-                    .or(
-                        `and(sender_id.eq.${currentUser.id},receiver_id.eq.${currentContactId}),and(sender_id.eq.${currentContactId},receiver_id.eq.${currentUser.id})`
-                        )
-                    .order('created_at', { ascending: true })
-                    .limit(300);
-                if (error) { console.error('loadMessages:', error); return; }
-                messagesCache[currentContactId] = data || [];
-                renderMessages();
-            }
+// ==================== ПЕРЕКЛЮЧЕНИЕ ВКЛАДОК ====================
+function setAuthMode(mode) {
+    authMode = mode;
+    if (mode === 'login') {
+        tabLogin.classList.add('active'); tabRegister.classList.remove('active');
+        loginFields.style.display = 'block'; regFields.classList.remove('show');
+        btnSubmit.textContent = '🚀 Войти';
+    } else {
+        tabRegister.classList.add('active'); tabLogin.classList.remove('active');
+        loginFields.style.display = 'none'; regFields.classList.add('show');
+        btnSubmit.textContent = '✨ Создать аккаунт';
+    }
+    authError.textContent = '';
+}
 
-            function renderMessages() {
-                messagesContainer.innerHTML = '';
-                const msgs = messagesCache[currentContactId] || [];
-                if (msgs.length === 0) {
-                    messagesContainer.innerHTML = `
-                <div style="text-align:center;color:var(--text2);padding:50px 20px;font-size:13px;">
-                  💬 Нет сообщений<br><span style="font-size:11px;opacity:0.7;">Напишите первым!</span>
-                </div>`;
-                    return;
-                }
-                msgs.forEach(m => {
-                    const isSent = m.sender_id === currentUser.id;
-                    const div = document.createElement('div');
-                    div.className = 'message ' + (isSent ? 'sent' : 'received');
-                    div.innerHTML = `${escapeHtml(m.text)}<div class="msg-time">${formatTime(m.created_at)}</div>`;
-                    messagesContainer.appendChild(div);
-                });
-                messagesContainer.scrollTop = messagesContainer.scrollHeight;
-            }
+tabLogin.addEventListener('click', () => setAuthMode('login'));
+tabRegister.addEventListener('click', () => setAuthMode('register'));
 
-            async function sendMessage(text) {
-                if (!text.trim() || !currentContactId || !currentUser) return;
-                const msg = {
-                    sender_id: currentUser.id,
-                    receiver_id: currentContactId,
-                    text: text.trim(),
-                    created_at: new Date().toISOString()
-                };
-                const { error } = await supabase.from('lumen_messages').insert(msg);
-                if (error) { console.error('sendMessage:', error);
-                    showToast('Ошибка отправки'); return; }
-                // Realtime сам подтянет сообщение через подписку
-            }
+// ==================== ОБРАБОТЧИК ОСНОВНОЙ КНОПКИ ====================
+btnSubmit.addEventListener('click', async () => {
+    authError.textContent = '';
+    btnSubmit.disabled = true;
 
-            function subscribeToMessages() {
-                if (messagesSubscription) {
-                    supabase.removeChannel(messagesSubscription);
-                }
-                if (!currentUser) return;
+    if (authMode === 'register') {
+        const email = regEmail.value.trim();
+        const nick = regNickname.value.trim();
+        const pass = regPassword.value;
+        if (!email || !nick || pass.length < 6) {
+            authError.textContent = 'Заполните все поля. Пароль минимум 6 символов.';
+            btnSubmit.disabled = false; return;
+        }
+        btnSubmit.textContent = 'Создаём...';
+        try {
+            await signUp(email, pass, nick);
+            showToast('✅ Аккаунт создан! Теперь войдите.');
+            setAuthMode('login');
+            loginIdentity.value = nick;
+            regEmail.value = ''; regNickname.value = ''; regPassword.value = '';
+        } catch (e) {
+            authError.textContent = e.message.includes('already registered') ? 'Этот email уже зарегистрирован' : (e.message || 'Ошибка');
+        }
+        btnSubmit.textContent = '✨ Создать аккаунт';
+        btnSubmit.disabled = false;
+        return;
+    }
 
-                messagesSubscription = supabase
-                    .channel('messages_changes')
-                    .on('postgres_changes', {
-                        event: 'INSERT',
-                        schema: 'public',
-                        table: 'lumen_messages',
-                        filter: `receiver_id=eq.${currentUser.id}`
-                    }, (payload) => {
-                        const msg = payload.new;
-                        // Если сообщение от текущего контакта или текущему контакту
-                        if (msg.sender_id === currentContactId) {
-                            if (!messagesCache[currentContactId]) messagesCache[currentContactId] = [];
-                            // Проверка на дубликат
-                            const exists = messagesCache[currentContactId].some(
-                                m => m.sender_id === msg.sender_id && m.text === msg.text && m.created_at ===
-                                msg.created_at
-                            );
-                            if (!exists) {
-                                messagesCache[currentContactId].push(msg);
-                                renderMessages();
-                            }
-                        }
-                        // Уведомление если чат не открыт
-                        if (msg.sender_id !== currentUser.id && msg.sender_id !== currentContactId) {
-                            const contact = contacts.find(c => c.contact_id === msg.sender_id);
-                            if (contact) {
-                                showToast(`📩 Новое сообщение от ${contact.nickname}`);
-                            }
-                        }
-                    })
-                    .subscribe();
-            }
+    // LOGIN
+    const identity = loginIdentity.value.trim();
+    const pass = loginPassword.value;
+    if (!identity || pass.length < 6) {
+        authError.textContent = 'Введите никнейм/email и пароль.';
+        btnSubmit.disabled = false; return;
+    }
+    btnSubmit.textContent = 'Входим...';
+    try {
+        await signInByIdentity(identity, pass);
+        showToast('👋 Добро пожаловать!');
+        loginIdentity.value = ''; loginPassword.value = '';
+    } catch (e) {
+        const msg = e.message || '';
+        if (msg.includes('Invalid login') || msg.includes('Invalid')) {
+            authError.textContent = 'Неверный никнейм/email или пароль';
+        } else if (msg.includes('не найден')) {
+            authError.textContent = msg;
+        } else {
+            authError.textContent = 'Ошибка входа. Проверьте данные.';
+        }
+    }
+    btnSubmit.textContent = '🚀 Войти';
+    btnSubmit.disabled = false;
+});
 
-            // ==================== ПРИСУТСТВИЕ (PRESENCE) ====================
-            function setupPresence() {
-                if (presenceChannel) {
-                    supabase.removeChannel(presenceChannel);
-                }
-                if (!currentUser) return;
+// Enter в полях
+[loginIdentity, loginPassword, regEmail, regNickname, regPassword].forEach(el => {
+    el.addEventListener('keydown', e => { if (e.key === 'Enter') btnSubmit.click(); });
+});
 
-                presenceChannel = supabase.channel('lumen_presence_channel', {
-                    config: { broadcast: { self: false } }
-                });
+// ==================== ОСТАЛЬНЫЕ ОБРАБОТЧИКИ ====================
+btnLogout.addEventListener('click', async () => { broadcastOffline(); await supabase.auth.signOut(); });
+btnAddContact.addEventListener('click', async () => {
+    const n = addContactInput.value.trim(); if (!n) { showToast('Введите никнейм'); return; }
+    const p = await findProfileByNickname(n); if (!p) { showToast('Пользователь не найден'); return; }
+    await addContact(p.id); addContactInput.value = '';
+});
+addContactInput.addEventListener('keydown', e => { if (e.key === 'Enter') btnAddContact.click(); });
+btnSend.addEventListener('click', async () => {
+    const t = messageInput.value; if (!t.trim()) return;
+    messageInput.value = ''; await sendMessage(t); messageInput.focus();
+});
+messageInput.addEventListener('keydown', e => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); btnSend.click(); } });
+btnCall.addEventListener('click', () => { if (currentCall) endCall(); else startCall(); });
+btnHangup.addEventListener('click', endCall);
+btnToggleMic.addEventListener('click', toggleMute);
+volumeSlider.addEventListener('input', () => { volumeLabel.textContent = volumeSlider.value + '%'; applyVolume(); });
+btnBack.addEventListener('click', () => {
+    currentContactId = null; currentContactUsername = null;
+    chatHeader.style.display = 'none'; inputArea.style.display = 'none'; noChatPlaceholder.style.display = 'flex';
+    messagesContainer.innerHTML = '';
+    document.getElementById('chat-area').classList.remove('active-mobile'); mainScreen.classList.remove('chat-open');
+    renderContacts();
+});
+document.addEventListener('keydown', e => { if (e.key === 'Escape' && currentCall) endCall(); });
+window.addEventListener('beforeunload', () => broadcastOffline());
+window.addEventListener('offline', () => showToast('🔴 Нет сети'));
+window.addEventListener('online', () => { showToast('🟢 Онлайн'); broadcastPresence(); if (peer && peer.disconnected) peer.reconnect(); });
 
-                presenceChannel.on('broadcast', { event: 'presence_update' }, (payload) => {
-                    const { userId, peerId, status, nickname } = payload.payload;
-                    if (userId === currentUser.id) return;
-                    contactsStatuses[userId] = status;
-                    if (peerId) peerIdToContactId[userId] = peerId;
-                    renderContacts();
-                    if (userId === currentContactId) updateChatPartnerStatus();
-                    if (status === 'online' && contacts.some(c => c.contact_id === userId)) {
-                        showToast(`🟢 ${nickname || 'Контакт'} теперь в сети`);
-                    }
-                });
-
-                presenceChannel.subscribe((status) => {
-                    if (status === 'SUBSCRIBED') {
-                        broadcastPresence();
-                    }
-                });
-            }
-
-            function broadcastPresence() {
-                if (!presenceChannel || !currentUser) return;
-                presenceChannel.send({
-                    type: 'broadcast',
-                    event: 'presence_update',
-                    payload: {
-                        userId: currentUser.id,
-                        peerId: peer?.id || null,
-                        status: 'online',
-                        nickname: currentUser.user_metadata?.nickname || currentUser.email?.split('@')[0] || 'User'
-                    }
-                });
-            }
-
-            function broadcastOffline() {
-                if (!presenceChannel || !currentUser) return;
-                presenceChannel.send({
-                    type: 'broadcast',
-                    event: 'presence_update',
-                    payload: {
-                        userId: currentUser.id,
-                        peerId: null,
-                        status: 'offline',
-                        nickname: currentUser.user_metadata?.nickname || currentUser.email?.split('@')[0] || 'User'
-                    }
-                });
-            }
-
-            // ==================== PEERJS / ЗВОНКИ ====================
-            function setupPeer() {
-                if (!currentUser) return;
-                if (peer) {
-                    try { peer.destroy(); } catch (e) {}
-                }
-
-                peer = new Peer(currentUser.id, {
-                    host: PEERJS_HOST,
-                    port: PEERJS_PORT,
-                    secure: PEERJS_SECURE,
-                    debug: 0
-                });
-
-                peer.on('open', (id) => {
-                    console.log('PeerJS ready:', id);
-                    broadcastPresence();
-                });
-
-                peer.on('call', async (call) => {
-                    if (currentCall) {
-                        call.close();
-                        return;
-                    }
-                    try {
-                        localStream = await navigator.mediaDevices.getUserMedia({ audio: true });
-                    } catch (e) {
-                        showToast('❌ Нет доступа к микрофону');
-                        call.close();
-                        return;
-                    }
-                    call.answer(localStream);
-                    setupCallUI(call);
-                });
-
-                peer.on('error', (err) => {
-                    console.error('PeerJS error:', err);
-                    if (err.type === 'unavailable-id') {
-                        // Пробуем переподключиться с другим ID
-                        peer.destroy();
-                        peer = new Peer(currentUser.id + '_' + Date.now(), {
-                            host: PEERJS_HOST,
-                            port: PEERJS_PORT,
-                            secure: PEERJS_SECURE,
-                            debug: 0
-                        });
-                        setupPeerHandlers();
-                    }
-                });
-
-                peer.on('disconnected', () => {
-                    peer.reconnect();
-                });
-            }
-
-            function setupPeerHandlers() {
-                peer.on('open', (id) => {
-                    console.log('PeerJS reconnected:', id);
-                    broadcastPresence();
-                });
-                peer.on('call', async (call) => {
-                    if (currentCall) { call.close(); return; }
-                    try {
-                        localStream = await navigator.mediaDevices.getUserMedia({ audio: true });
-                    } catch (e) {
-                        showToast('❌ Нет доступа к микрофону');
-                        call.close();
-                        return;
-                    }
-                    call.answer(localStream);
-                    setupCallUI(call);
-                });
-                peer.on('error', (err) => console.error('PeerJS error:', err));
-                peer.on('disconnected', () => peer.reconnect());
-            }
-
-            async function startCall() {
-                if (!currentContactId || !peer) return;
-                if (currentCall) {
-                    endCall();
-                    return;
-                }
-                try {
-                    localStream = await navigator.mediaDevices.getUserMedia({ audio: true });
-                } catch (e) {
-                    showToast('❌ Нет доступа к микрофону');
-                    return;
-                }
-                const targetPeerId = peerIdToContactId[currentContactId] || currentContactId;
-                const call = peer.call(targetPeerId, localStream);
-                if (!call) {
-                    showToast('📵 Абонент недоступен для звонка');
-                    if (localStream) { localStream.getTracks().forEach(t => t.stop());
-                        localStream = null; }
-                    return;
-                }
-                setupCallUI(call);
-            }
-
-            function setupCallUI(call) {
-                currentCall = call;
-                callOverlay.classList.add('active');
-                callAvatarDisplay.textContent = getInitials(currentContactUsername || '?');
-                callPartnerDisplay.textContent = '📞 ' + (currentContactUsername || 'Собеседник');
-                callStatus.textContent = 'Устанавливаем соединение...';
-                callStatus.style.color = 'var(--accent2)';
-                volumeSlider.value = 50;
-                volumeLabel.textContent = '50%';
-                isMuted = false;
-                btnToggleMic.classList.remove('muted');
-                btnToggleMic.textContent = '🎤';
-                if (localStream) {
-                    localStream.getAudioTracks().forEach(t => (t.enabled = true));
-                }
-                btnCall.classList.add('in-call');
-                btnCall.textContent = '📞 В звонке';
-
-                call.on('stream', (remoteStream) => {
-                    callStatus.textContent = '🟢 Разговор';
-                    callStatus.style.color = 'var(--online)';
-                    if (remoteAudio) {
-                        remoteAudio.srcObject = null;
-                        remoteAudio.remove();
-                    }
-                    remoteAudio = document.createElement('audio');
-                    remoteAudio.srcObject = remoteStream;
-                    remoteAudio.autoplay = true;
-                    remoteAudio.playsInline = true;
-                    document.body.appendChild(remoteAudio);
-                    applyVolume();
-                });
-
-                call.on('close', () => {
-                    endCallUI();
-                    showToast('📞 Звонок завершён');
-                });
-
-                call.on('error', (err) => {
-                    console.error('Call error:', err);
-                    callStatus.textContent = '⚠️ Ошибка соединения';
-                    callStatus.style.color = 'var(--danger)';
-                    setTimeout(endCallUI, 2000);
-                });
-            }
-
-            function applyVolume() {
-                if (!remoteAudio) return;
-                const val = parseInt(volumeSlider.value);
-                let gain;
-                const points = [
-                    [0, 0],
-                    [1, 0.002],
-                    [25, 0.1],
-                    [50, 0.2],
-                    [75, 0.5],
-                    [100, 1.0]
-                ];
-                if (val <= 0) gain = 0;
-                else if (val >= 100) gain = 1.0;
-                else {
-                    for (let i = 0; i < points.length - 1; i++) {
-                        if (val >= points[i][0] && val <= points[i + 1][0]) {
-                            const t = (val - points[i][0]) / (points[i + 1][0] - points[i][0]);
-                            gain = points[i][1] + t * (points[i + 1][1] - points[i][1]);
-                            break;
-                        }
-                    }
-                }
-                remoteAudio.volume = Math.max(0, Math.min(1, gain));
-            }
-
-            function toggleMute() {
-                isMuted = !isMuted;
-                if (localStream) {
-                    localStream.getAudioTracks().forEach(t => (t.enabled = !isMuted));
-                }
-                btnToggleMic.classList.toggle('muted', isMuted);
-                btnToggleMic.textContent = isMuted ? '🔇' : '🎤';
-                showToast(isMuted ? '🔇 Микрофон выключен' : '🎤 Микрофон включен');
-            }
-
-            function endCall() {
-                if (currentCall) {
-                    try { currentCall.close(); } catch (e) {}
-                }
-                endCallUI();
-            }
-
-            function endCallUI() {
-                callOverlay.classList.remove('active');
-                if (remoteAudio) {
-                    remoteAudio.srcObject = null;
-                    remoteAudio.remove();
-                    remoteAudio = null;
-                }
-                if (localStream) {
-                    localStream.getTracks().forEach(t => t.stop());
-                    localStream = null;
-                }
-                currentCall = null;
-                isMuted = false;
-                btnToggleMic.classList.remove('muted');
-                btnToggleMic.textContent = '🎤';
-                btnCall.classList.remove('in-call');
-                btnCall.textContent = '📞 Звонок';
-                callStatus.textContent = 'Соединение...';
-                callStatus.style.color = 'var(--accent2)';
-            }
-
-            // ==================== ЧАТ ====================
-            async function openChat(contactId, contactNickname) {
-                currentContactId = contactId;
-                currentContactUsername = contactNickname;
-                chatPartnerName.textContent = contactNickname;
-                updateChatPartnerStatus();
-                chatHeader.style.display = 'flex';
-                inputArea.style.display = 'flex';
-                noChatPlaceholder.style.display = 'none';
-                mainScreen.classList.add('chat-open');
-                document.getElementById('chat-area').classList.add('active-mobile');
-                if (currentCall) {
-                    btnCall.classList.add('in-call');
-                    btnCall.textContent = '📞 В звонке';
-                } else {
-                    btnCall.classList.remove('in-call');
-                    btnCall.textContent = '📞 Звонок';
-                }
-                renderContacts();
-                await loadMessages();
-                messagesContainer.scrollTop = messagesContainer.scrollHeight;
-                messageInput.focus();
-            }
-
-            function updateChatPartnerStatus() {
-                if (!currentContactId) return;
-                const status = contactsStatuses[currentContactId] || 'offline';
-                chatPartnerStatus.textContent = status === 'online' ? '🟢 В сети' : '⚫ Не в сети';
-                chatPartnerStatus.style.color = status === 'online' ? 'var(--online)' : 'var(--text2)';
-            }
-
-            // ==================== АВТОРИЗАЦИЯ ====================
-            async function signUp(nickname, password) {
-                const email = nickname.toLowerCase().replace(/[^a-z0-9]/g, '_') + '@lumen.user';
-                const { data, error } = await supabase.auth.signUp({
-                    email,
-                    password,
-                    options: { data: { nickname } }
-                });
-                if (error) throw error;
-                if (data.user) {
-                    await upsertProfile(data.user.id, nickname);
-                }
-                return data;
-            }
-
-            async function signIn(nickname, password) {
-                const email = nickname.toLowerCase().replace(/[^a-z0-9]/g, '_') + '@lumen.user';
-                const { data, error } = await supabase.auth.signInWithPassword({ email, password });
-                if (error) throw error;
-                if (data.user) {
-                    await upsertProfile(data.user.id, data.user.user_metadata?.nickname || nickname);
-                }
-                return data;
-            }
-
-            async function signInWithGoogle() {
-                const { error } = await supabase.auth.signInWithOAuth({
-                    provider: 'google',
-                    options: {
-                        redirectTo: window.location.origin + window.location.pathname
-                    }
-                });
-                if (error) throw error;
-            }
-
-            // ==================== ГЛАВНЫЙ ПОТОК ====================
-            async function onUserReady(user) {
-                currentUser = user;
-                if (!user) {
-                    // Вышли
-                    authScreen.style.display = 'flex';
-                    mainScreen.classList.remove('active');
-                    broadcastOffline();
-                    if (presenceChannel) { supabase.removeChannel(presenceChannel);
-                        presenceChannel = null; }
-                    if (messagesSubscription) { supabase.removeChannel(messagesSubscription);
-                        messagesSubscription = null; }
-                    if (peer) { peer.destroy();
-                        peer = null; }
-                    if (presenceInterval) { clearInterval(presenceInterval);
-                        presenceInterval = null; }
-                    endCallUI();
-                    contacts = [];
-                    currentContactId = null;
-                    currentContactUsername = null;
-                    messagesCache = {};
-                    contactsList.innerHTML = '';
-                    chatHeader.style.display = 'none';
-                    inputArea.style.display = 'none';
-                    noChatPlaceholder.style.display = 'flex';
-                    messagesContainer.innerHTML = '';
-                    document.getElementById('chat-area').classList.remove('active-mobile');
-                    mainScreen.classList.remove('chat-open');
-                    return;
-                }
-
-                // Вошли
-                const nickname = user.user_metadata?.nickname || user.email?.split('@')[0] || 'User';
-                await upsertProfile(user.id, nickname);
-
-                authScreen.style.display = 'none';
-                mainScreen.classList.add('active');
-                myAvatar.textContent = getInitials(nickname);
-                myUsername.textContent = nickname;
-
-                await loadContacts();
-                setupPeer();
-                setupPresence();
-                subscribeToMessages();
-                broadcastPresence();
-
-                // Периодический пинг (раз в 40 секунд)
-                if (presenceInterval) clearInterval(presenceInterval);
-                presenceInterval = setInterval(() => {
-                    if (currentUser && presenceChannel) broadcastPresence();
-                }, 40000);
-            }
-
-            // ==================== ОБРАБОТЧИКИ СОБЫТИЙ ====================
-            btnLogin.addEventListener('click', async () => {
-                const nick = authNickname.value.trim();
-                const pass = authPassword.value;
-                if (!nick || pass.length < 6) {
-                    authError.textContent = 'Укажите никнейм и пароль (мин. 6 символов)';
-                    return;
-                }
-                authError.textContent = '';
-                btnLogin.textContent = 'Входим...';
-                btnLogin.disabled = true;
-                try {
-                    await signIn(nick, pass);
-                    showToast('👋 Добро пожаловать, ' + nick + '!');
-                    authNickname.value = '';
-                    authPassword.value = '';
-                } catch (e) {
-                    authError.textContent = e.message === 'Invalid login credentials' ?
-                        'Неверный никнейм или пароль' :
-                        (e.message || 'Ошибка входа');
-                }
-                btnLogin.textContent = '🚀 Войти';
-                btnLogin.disabled = false;
-            });
-
-            btnRegister.addEventListener('click', async () => {
-                const nick = authNickname.value.trim();
-                const pass = authPassword.value;
-                if (!nick || pass.length < 6) {
-                    authError.textContent = 'Укажите никнейм и пароль (мин. 6 символов)';
-                    return;
-                }
-                if (nick.length < 2) {
-                    authError.textContent = 'Никнейм должен быть минимум 2 символа';
-                    return;
-                }
-                authError.textContent = '';
-                btnRegister.textContent = 'Создаём...';
-                btnRegister.disabled = true;
-                try {
-                    await signUp(nick, pass);
-                    showToast('✅ Аккаунт создан! Теперь войдите.');
-                    authPassword.value = '';
-                } catch (e) {
-                    authError.textContent = e.message === 'User already registered' ?
-                        'Пользователь с таким никнеймом уже существует' :
-                        (e.message || 'Ошибка регистрации');
-                }
-                btnRegister.textContent = '✨ Создать аккаунт';
-                btnRegister.disabled = false;
-            });
-
-            btnGoogle.addEventListener('click', async () => {
-                authError.textContent = '';
-                try {
-                    await signInWithGoogle();
-                } catch (e) {
-                    authError.textContent = 'Ошибка входа через Google. Проверьте настройки OAuth.';
-                }
-            });
-
-            // Enter в полях авторизации
-            authPassword.addEventListener('keydown', (e) => {
-                if (e.key === 'Enter') btnLogin.click();
-            });
-            authNickname.addEventListener('keydown', (e) => {
-                if (e.key === 'Enter') authPassword.focus();
-            });
-
-            btnLogout.addEventListener('click', async () => {
-                broadcastOffline();
-                await supabase.auth.signOut();
-            });
-
-            btnAddContact.addEventListener('click', async () => {
-                const nick = addContactInput.value.trim();
-                if (!nick) { showToast('Введите никнейм'); return; }
-                const profile = await findProfileByNickname(nick);
-                if (!profile) { showToast('❌ Пользователь не найден'); return; }
-                await addContact(profile.id);
-                addContactInput.value = '';
-            });
-
-            addContactInput.addEventListener('keydown', (e) => {
-                if (e.key === 'Enter') btnAddContact.click();
-            });
-
-            btnSend.addEventListener('click', async () => {
-                const text = messageInput.value;
-                if (!text.trim()) return;
-                messageInput.value = '';
-                await sendMessage(text);
-                messageInput.focus();
-            });
-
-            messageInput.addEventListener('keydown', (e) => {
-                if (e.key === 'Enter' && !e.shiftKey) {
-                    e.preventDefault();
-                    btnSend.click();
-                }
-            });
-
-            btnCall.addEventListener('click', () => {
-                if (currentCall) {
-                    endCall();
-                } else {
-                    startCall();
-                }
-            });
-
-            btnHangup.addEventListener('click', endCall);
-            btnToggleMic.addEventListener('click', toggleMute);
-
-            volumeSlider.addEventListener('input', () => {
-                volumeLabel.textContent = volumeSlider.value + '%';
-                applyVolume();
-            });
-
-            btnBack.addEventListener('click', () => {
-                currentContactId = null;
-                currentContactUsername = null;
-                chatHeader.style.display = 'none';
-                inputArea.style.display = 'none';
-                noChatPlaceholder.style.display = 'flex';
-                messagesContainer.innerHTML = '';
-                document.getElementById('chat-area').classList.remove('active-mobile');
-                mainScreen.classList.remove('chat-open');
-                renderContacts();
-            });
-
-            // Закрытие звонка по Escape
-            document.addEventListener('keydown', (e) => {
-                if (e.key === 'Escape' && currentCall) {
-                    endCall();
-                }
-            });
-
-            // Обработка offline/online браузера
-            window.addEventListener('beforeunload', () => {
-                broadcastOffline();
-            });
-            window.addEventListener('offline', () => {
-                showToast('🔴 Нет интернета');
-            });
-            window.addEventListener('online', () => {
-                showToast('🟢 Интернет восстановлен');
-                broadcastPresence();
-                if (peer && peer.disconnected) {
-                    peer.reconnect();
-                }
-            });
-
-            // ==================== ЗАПУСК ====================
-            supabase.auth.onAuthStateChange((event, session) => {
-                onUserReady(session?.user || null);
-            });
-
-            // Проверка сессии при загрузке
-            (async function init() {
-                const { data: { session } } = await supabase.auth.getSession();
-                await onUserReady(session?.user || null);
-                console.log('💜 Lumen Messenger готов');
-                console.log('⚠️ Убедитесь, что SUPABASE_URL и SUPABASE_ANON_KEY заменены на ваши.');
-                console.log('📋 SQL для Supabase — смотрите инструкцию ниже.');
-            })();
-        })();
-    </script>
+// ==================== ИНИЦИАЛИЗАЦИЯ ====================
+setAuthMode('login');
+supabase.auth.onAuthStateChange((_, session) => onUserReady(session?.user || null));
+(async function init() {
+    const { data: { session } } = await supabase.auth.getSession();
+    await onUserReady(session?.user || null);
+    console.log('💜 Lumen Messenger готов');
+})();
+})();
+</script>
 </body>
 </html>
