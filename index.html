@@ -268,10 +268,13 @@ function apiUrl(path) {
 function apiHeaders() {
     var h = {
         'apikey': SUPABASE_KEY,
-        'Authorization': 'Bearer ' + (_accessToken || SUPABASE_KEY),
+        'Authorization': 'Bearer ' + SUPABASE_KEY,
         'Content-Type': 'application/json',
         'Prefer': 'return=representation'
     };
+    if (_accessToken) {
+        h['Authorization'] = 'Bearer ' + _accessToken;
+    }
     return h;
 }
 
