@@ -251,69 +251,37 @@
 <div id="toast"></div>
 
 <script>
-// ==================== ВСТРОЕННЫЙ SUPABASE-СОВМЕСТИМЫЙ КЛИЕНТ ====================
-// Это минималистичная реализация, не зависящая от CDN.
-// Всё взаимодействие идёт через fetch напрямую к Supabase REST API.
-
+// ==================== КОНФИГУРАЦИЯ ====================
 var SUPABASE_URL = 'https://wiuhicakznpyfaxxvnjj.supabase.co';
-var SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndpdWhpY2Frem5weWZheHh2bmpqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTE4Mzg0ODAsImV4cCI6MjA2NzQxNDQ4MH0.qNe17YKNvuTqUDZPhu13PQ8xYJ-3MmnJcVgL5Svn9AQ';
+var SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndpdWhpY2Frem5weWZheHh2bmpqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODU0Nzg2MjksImV4cCI6MjEwMTA1NDYyOX0.u5fa1Lp7MaqfVMQFxEZ0vdsqRvzyEgRg2RjUJugrbFk';
 
-// ==================== ПРОСТОЙ API-КЛИЕНТ ====================
+// ==================== API КЛИЕНТ ====================
 var _accessToken = null;
 
-function apiUrl(path) {
-    return SUPABASE_URL + '/rest/v1/' + path;
+function authHeaders() {
+    // Для auth-эндпоинтов ВСЕГДА используем SUPABASE_KEY
+    return {
+        'apikey': SUPABASE_KEY,
+        'Content-Type': 'application/json'
+    };
 }
 
-function apiHeaders() {
-    var h = {
+function restHeaders() {
+    // Для REST API используем access_token если есть, иначе SUPABASE_KEY
+    var token = _accessToken || SUPABASE_KEY;
+    return {
         'apikey': SUPABASE_KEY,
-        'Authorization': 'Bearer ' + SUPABASE_KEY,
+        'Authorization': 'Bearer ' + token,
         'Content-Type': 'application/json',
         'Prefer': 'return=representation'
     };
-    if (_accessToken) {
-        h['Authorization'] = 'Bearer ' + _accessToken;
-    }
-    return h;
 }
 
-async function apiGet(table, query) {
-    var url = apiUrl(table);
-    if (query) {
-        var params = new URLSearchParams();
-        for (var k in query) params.append(k, query[k]);
-        url += '?' + params.toString();
-    }
-    var res = await fetch(url, { headers: apiHeaders() });
-    if (!res.ok) { var err = await res.text(); console.error('GET error', table, err); return { data: null, error: err }; }
-    var data = await res.json();
-    return { data: data, error: null };
-}
-
-async function apiPost(table, body) {
-    var res = await fetch(apiUrl(table), { method: 'POST', headers: apiHeaders(), body: JSON.stringify(body) });
-    if (!res.ok) { var err = await res.text(); console.error('POST error', table, err); return { error: err }; }
-    return { error: null };
-}
-
-async function apiPatch(table, body, query) {
-    var url = apiUrl(table);
-    if (query) {
-        var params = new URLSearchParams();
-        for (var k in query) params.append(k, query[k]);
-        url += '?' + params.toString();
-    }
-    var res = await fetch(url, { method: 'PATCH', headers: apiHeaders(), body: JSON.stringify(body) });
-    if (!res.ok) { var err = await res.text(); return { error: err }; }
-    return { error: null };
-}
-
-// ==================== AUTH ФУНКЦИИ ====================
+// ==================== AUTH ====================
 async function supabaseSignUp(email, password, nickname) {
     var res = await fetch(SUPABASE_URL + '/auth/v1/signup', {
         method: 'POST',
-        headers: { 'apikey': SUPABASE_KEY, 'Content-Type': 'application/json' },
+        headers: authHeaders(),
         body: JSON.stringify({ email: email, password: password, data: { nickname: nickname } })
     });
     var data = await res.json();
@@ -328,21 +296,27 @@ async function supabaseSignUp(email, password, nickname) {
 async function supabaseSignIn(email, password) {
     var res = await fetch(SUPABASE_URL + '/auth/v1/token?grant_type=password', {
         method: 'POST',
-        headers: { 'apikey': SUPABASE_KEY, 'Content-Type': 'application/json' },
+        headers: authHeaders(),
         body: JSON.stringify({ email: email, password: password })
     });
     var data = await res.json();
     if (!res.ok) throw new Error(data.msg || data.error_description || JSON.stringify(data));
-    if (data.access_token) _accessToken = data.access_token;
+    if (data.access_token) {
+        _accessToken = data.access_token;
+        localStorage.setItem('lumen_token', data.access_token);
+    }
     return data;
 }
 
 async function supabaseSignOut() {
-    await fetch(SUPABASE_URL + '/auth/v1/logout', {
-        method: 'POST',
-        headers: { 'apikey': SUPABASE_KEY, 'Authorization': 'Bearer ' + _accessToken }
-    });
+    if (_accessToken) {
+        await fetch(SUPABASE_URL + '/auth/v1/logout', {
+            method: 'POST',
+            headers: { 'apikey': SUPABASE_KEY, 'Authorization': 'Bearer ' + _accessToken }
+        });
+    }
     _accessToken = null;
+    localStorage.removeItem('lumen_token');
 }
 
 async function supabaseGetUser() {
@@ -350,8 +324,31 @@ async function supabaseGetUser() {
     var res = await fetch(SUPABASE_URL + '/auth/v1/user', {
         headers: { 'apikey': SUPABASE_KEY, 'Authorization': 'Bearer ' + _accessToken }
     });
-    if (!res.ok) { _accessToken = null; return null; }
+    if (!res.ok) { _accessToken = null; localStorage.removeItem('lumen_token'); return null; }
     return await res.json();
+}
+
+// ==================== REST API ====================
+async function apiGet(table, query) {
+    var url = SUPABASE_URL + '/rest/v1/' + table;
+    if (query) {
+        var params = new URLSearchParams();
+        for (var k in query) params.append(k, query[k]);
+        url += '?' + params.toString();
+    }
+    var res = await fetch(url, { headers: restHeaders() });
+    if (!res.ok) { console.error('GET error', table, await res.text()); return { data: null, error: true }; }
+    return { data: await res.json(), error: null };
+}
+
+async function apiPost(table, body) {
+    var res = await fetch(SUPABASE_URL + '/rest/v1/' + table, {
+        method: 'POST',
+        headers: restHeaders(),
+        body: JSON.stringify(body)
+    });
+    if (!res.ok) { console.error('POST error', table, await res.text()); return { error: true }; }
+    return { error: null };
 }
 
 // ==================== DOM ====================
@@ -402,8 +399,6 @@ var contacts = [];
 var messagesCache = {};
 var authMode = 'login';
 var toastTimer = null;
-
-// PeerJS (загружается отдельно, если доступен)
 var peer = null;
 var currentCall = null;
 var localStream = null;
@@ -411,6 +406,7 @@ var remoteAudio = null;
 var isMuted = false;
 var contactsStatuses = {};
 var peerIdToContactId = {};
+var presenceIntervalId = null;
 
 // ==================== TOAST ====================
 function showToast(msg) {
@@ -419,62 +415,39 @@ function showToast(msg) {
     clearTimeout(toastTimer);
     toastTimer = setTimeout(function() { toast.classList.remove('show'); }, 2800);
 }
-
-function escapeHtml(s) {
-    var d = document.createElement('div');
-    d.textContent = s;
-    return d.innerHTML;
-}
-
-function getInitials(n) {
-    return (n || '?')[0].toUpperCase();
-}
-
-function formatTime(i) {
-    return new Date(i).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-}
+function escapeHtml(s) { var d = document.createElement('div'); d.textContent = s; return d.innerHTML; }
+function getInitials(n) { return (n || '?')[0].toUpperCase(); }
+function formatTime(i) { return new Date(i).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }); }
 
 // ==================== ПРОФИЛИ ====================
 async function upsertProfile(uid, nick, email) {
     var body = { id: uid, nickname: nick, updated_at: new Date().toISOString() };
     if (email) body.email = email;
-    // upsert через PATCH с Prefer: return=representation, но проще через POST с ON CONFLICT
-    // Используем прямой запрос
+    // Пробуем PATCH (если запись есть)
     var res = await fetch(SUPABASE_URL + '/rest/v1/lumen_profiles?id=eq.' + uid, {
-        headers: {
-            'apikey': SUPABASE_KEY,
-            'Authorization': 'Bearer ' + (_accessToken || SUPABASE_KEY),
-            'Content-Type': 'application/json',
-            'Prefer': 'resolution=merge-duplicates'
-        },
+        method: 'PATCH',
+        headers: restHeaders(),
         body: JSON.stringify(body)
     });
-    // Если запись существует - обновится, если нет - ошибка, тогда вставляем
+    // Если не получилось — вставляем
     if (!res.ok) {
         await apiPost('lumen_profiles', body);
     }
 }
-
 async function findProfileByNickname(nick) {
-    var { data } = await apiGet('lumen_profiles', { nickname: 'ilike.' + nick.trim(), limit: '1' });
-    return (data && data.length > 0) ? data[0] : null;
+    var result = await apiGet('lumen_profiles', { nickname: 'ilike.' + nick.trim(), limit: '1' });
+    return (result.data && result.data.length > 0) ? result.data[0] : null;
 }
 
 // ==================== КОНТАКТЫ ====================
 async function loadContacts() {
     if (!currentUser) return;
-    var { data } = await apiGet('lumen_contacts', { user_id: 'eq.' + currentUser.id, select: 'contact_id,profiles!lumen_contacts_contact_id_fkey(nickname)' });
-    // apiGet возвращает плоские данные, нужно распарсить
-    // Supabase возвращает вложенные данные как profiles: { nickname: ... }
-    contacts = (data || []).map(function(r) {
-        return {
-            contact_id: r.contact_id,
-            nickname: (r.profiles && r.profiles.nickname) ? r.profiles.nickname : 'Неизвестный'
-        };
+    var result = await apiGet('lumen_contacts', { user_id: 'eq.' + currentUser.id, select: 'contact_id,profiles!lumen_contacts_contact_id_fkey(nickname)' });
+    contacts = (result.data || []).map(function(r) {
+        return { contact_id: r.contact_id, nickname: (r.profiles && r.profiles.nickname) ? r.profiles.nickname : 'Неизвестный' };
     });
     renderContacts();
 }
-
 async function addContact(cid) {
     if (cid === currentUser.id) { showToast('Нельзя добавить себя'); return; }
     if (contacts.find(function(c) { return c.contact_id === cid; })) { showToast('Уже в контактах'); return; }
@@ -482,7 +455,6 @@ async function addContact(cid) {
     await loadContacts();
     showToast('✅ Добавлен');
 }
-
 function renderContacts() {
     contactsList.innerHTML = '';
     if (!contacts.length) {
@@ -502,25 +474,17 @@ function renderContacts() {
 // ==================== СООБЩЕНИЯ ====================
 async function loadMessages() {
     if (!currentContactId || !currentUser) return;
-    var query = {
-        or: '(sender_id.eq.' + currentUser.id + ',receiver_id.eq.' + currentContactId + ')',
-        order: 'created_at.asc',
-        limit: '300'
-    };
-    // Упрощённый запрос: получаем все сообщения где sender_id = currentUser или receiver_id = currentUser
-    // и фильтруем на клиенте
-    var { data } = await apiGet('lumen_messages', {
+    var result = await apiGet('lumen_messages', {
         or: '(sender_id.eq.' + currentUser.id + ',receiver_id.eq.' + currentUser.id + ')',
         order: 'created_at.asc',
         limit: '500'
     });
-    messagesCache[currentContactId] = (data || []).filter(function(m) {
+    messagesCache[currentContactId] = (result.data || []).filter(function(m) {
         return (m.sender_id === currentUser.id && m.receiver_id === currentContactId) ||
                (m.sender_id === currentContactId && m.receiver_id === currentUser.id);
     });
     renderMessages();
 }
-
 function renderMessages() {
     messagesContainer.innerHTML = '';
     var msgs = messagesCache[currentContactId] || [];
@@ -536,49 +500,28 @@ function renderMessages() {
     });
     messagesContainer.scrollTop = messagesContainer.scrollHeight;
 }
-
 async function sendMessage(text) {
     if (!text.trim() || !currentContactId || !currentUser) return;
-    var msg = {
-        sender_id: currentUser.id,
-        receiver_id: currentContactId,
-        text: text.trim(),
-        created_at: new Date().toISOString()
-    };
+    var msg = { sender_id: currentUser.id, receiver_id: currentContactId, text: text.trim(), created_at: new Date().toISOString() };
     await apiPost('lumen_messages', msg);
-    // Добавляем локально
     if (!messagesCache[currentContactId]) messagesCache[currentContactId] = [];
     messagesCache[currentContactId].push(msg);
     renderMessages();
 }
 
-// ==================== PRESENCE (УПРОЩЁННЫЙ POLLING) ====================
-var presenceIntervalId = null;
-
+// ==================== PRESENCE ====================
 function startPresencePolling() {
     if (presenceIntervalId) clearInterval(presenceIntervalId);
-    presenceIntervalId = setInterval(async function() {
-        if (!currentUser) return;
-        // Обновляем статусы контактов через проверку последнего онлайна
-        // Упрощённо: проверяем наличие recent активности
-        for (var i = 0; i < contacts.length; i++) {
-            var cid = contacts[i].contact_id;
-            // Не можем узнать статус без realtime, поэтому оставляем как есть
-        }
-        renderContacts();
-    }, 10000);
+    presenceIntervalId = setInterval(function() { if (currentUser) renderContacts(); }, 10000);
 }
 
 // ==================== PEERJS (ЗВОНКИ) ====================
 function setupPeer() {
-    if (typeof Peer === 'undefined') {
-        console.log('PeerJS не загружен, звонки отключены');
-        return;
-    }
+    if (typeof Peer === 'undefined') { console.log('PeerJS не загружен'); return; }
     if (!currentUser) return;
     if (peer) { try { peer.destroy(); } catch(e) {} }
     peer = new Peer(currentUser.id, { host: '0.peerjs.com', port: 443, secure: true, debug: 0 });
-    peer.on('open', function(id) { console.log('Peer ready: ' + id); });
+    peer.on('open', function() {});
     peer.on('call', async function(call) {
         if (currentCall) { call.close(); return; }
         try { localStream = await navigator.mediaDevices.getUserMedia({ audio: true }); }
@@ -589,112 +532,59 @@ function setupPeer() {
     peer.on('error', function() {});
     peer.on('disconnected', function() { peer.reconnect(); });
 }
-
 async function startCall() {
     if (!currentContactId || !peer || currentCall) return;
-    if (typeof Peer === 'undefined') { showToast('Звонки временно недоступны'); return; }
+    if (typeof Peer === 'undefined') { showToast('Звонки недоступны'); return; }
     try { localStream = await navigator.mediaDevices.getUserMedia({ audio: true }); }
     catch(e) { showToast('Нет микрофона'); return; }
-    var target = peerIdToContactId[currentContactId] || currentContactId;
-    var call = peer.call(target, localStream);
-    if (!call) {
-        if (localStream) { localStream.getTracks().forEach(function(t) { t.stop(); }); localStream = null; }
-        showToast('Абонент недоступен');
-        return;
-    }
+    var call = peer.call(peerIdToContactId[currentContactId] || currentContactId, localStream);
+    if (!call) { if (localStream) { localStream.getTracks().forEach(function(t) { t.stop(); }); localStream = null; } showToast('Абонент недоступен'); return; }
     setupCallUI(call);
 }
-
 function setupCallUI(call) {
-    currentCall = call;
-    callOverlay.classList.add('active');
+    currentCall = call; callOverlay.classList.add('active');
     callAvatarDisplay.textContent = getInitials(currentContactUsername || '?');
     callPartnerDisplay.textContent = '📞 ' + (currentContactUsername || 'Собеседник');
-    callStatus.textContent = 'Соединение...';
-    callStatus.style.color = 'var(--accent2)';
-    volumeSlider.value = 50;
-    volumeLabel.textContent = '50%';
-    isMuted = false;
-    btnToggleMic.classList.remove('muted');
-    btnToggleMic.textContent = '🎤';
+    callStatus.textContent = 'Соединение...'; callStatus.style.color = 'var(--accent2)';
+    volumeSlider.value = 50; volumeLabel.textContent = '50%'; isMuted = false;
+    btnToggleMic.classList.remove('muted'); btnToggleMic.textContent = '🎤';
     if (localStream) localStream.getAudioTracks().forEach(function(t) { t.enabled = true; });
-    btnCall.classList.add('in-call');
-    btnCall.textContent = '📞 В звонке';
+    btnCall.classList.add('in-call'); btnCall.textContent = '📞 В звонке';
     call.on('stream', function(rs) {
-        callStatus.textContent = '🟢 Разговор';
-        callStatus.style.color = 'var(--online)';
+        callStatus.textContent = '🟢 Разговор'; callStatus.style.color = 'var(--online)';
         if (remoteAudio) { remoteAudio.srcObject = null; remoteAudio.remove(); }
-        remoteAudio = document.createElement('audio');
-        remoteAudio.srcObject = rs;
-        remoteAudio.autoplay = true;
-        remoteAudio.playsInline = true;
-        document.body.appendChild(remoteAudio);
-        applyVolume();
+        remoteAudio = document.createElement('audio'); remoteAudio.srcObject = rs; remoteAudio.autoplay = true; remoteAudio.playsInline = true;
+        document.body.appendChild(remoteAudio); applyVolume();
     });
     call.on('close', function() { endCallUI(); showToast('Звонок завершён'); });
     call.on('error', function() { callStatus.textContent = 'Ошибка'; setTimeout(endCallUI, 2000); });
 }
-
 function applyVolume() {
-    if (!remoteAudio) return;
-    var v = parseInt(volumeSlider.value);
-    var g;
+    if (!remoteAudio) return; var v = parseInt(volumeSlider.value); var g;
     var pts = [[0,0],[1,0.002],[25,0.1],[50,0.2],[75,0.5],[100,1.0]];
-    if (v <= 0) g = 0;
-    else if (v >= 100) g = 1;
-    else {
-        for (var i = 0; i < pts.length-1; i++) {
-            if (v >= pts[i][0] && v <= pts[i+1][0]) {
-                g = pts[i][1] + (v - pts[i][0]) / (pts[i+1][0] - pts[i][0]) * (pts[i+1][1] - pts[i][1]);
-                break;
-            }
-        }
-    }
+    if (v <= 0) g = 0; else if (v >= 100) g = 1;
+    else for (var i = 0; i < pts.length-1; i++) if (v >= pts[i][0] && v <= pts[i+1][0]) { g = pts[i][1] + (v - pts[i][0]) / (pts[i+1][0] - pts[i][0]) * (pts[i+1][1] - pts[i][1]); break; }
     remoteAudio.volume = Math.max(0, Math.min(1, g));
 }
-
-function toggleMute() {
-    isMuted = !isMuted;
-    if (localStream) localStream.getAudioTracks().forEach(function(t) { t.enabled = !isMuted; });
-    btnToggleMic.classList.toggle('muted', isMuted);
-    btnToggleMic.textContent = isMuted ? '🔇' : '🎤';
-}
-
-function endCall() {
-    if (currentCall) { try { currentCall.close(); } catch(e) {} }
-    endCallUI();
-}
-
+function toggleMute() { isMuted = !isMuted; if (localStream) localStream.getAudioTracks().forEach(function(t) { t.enabled = !isMuted; }); btnToggleMic.classList.toggle('muted', isMuted); btnToggleMic.textContent = isMuted ? '🔇' : '🎤'; }
+function endCall() { if (currentCall) try { currentCall.close(); } catch(e) {} endCallUI(); }
 function endCallUI() {
     callOverlay.classList.remove('active');
     if (remoteAudio) { remoteAudio.srcObject = null; remoteAudio.remove(); remoteAudio = null; }
     if (localStream) { localStream.getTracks().forEach(function(t) { t.stop(); }); localStream = null; }
-    currentCall = null;
-    isMuted = false;
-    btnToggleMic.classList.remove('muted');
-    btnToggleMic.textContent = '🎤';
-    btnCall.classList.remove('in-call');
-    btnCall.textContent = '📞 Звонок';
+    currentCall = null; isMuted = false; btnToggleMic.classList.remove('muted'); btnToggleMic.textContent = '🎤';
+    btnCall.classList.remove('in-call'); btnCall.textContent = '📞 Звонок';
 }
 
 // ==================== ЧАТ ====================
 async function openChat(cid, cnick) {
-    currentContactId = cid;
-    currentContactUsername = cnick;
-    chatPartnerName.textContent = cnick;
-    updateChatPartnerStatus();
-    chatHeader.style.display = 'flex';
-    inputArea.style.display = 'flex';
-    noChatPlaceholder.style.display = 'none';
-    mainScreen.classList.add('chat-open');
-    document.getElementById('chat-area').classList.add('active-mobile');
-    btnCall.classList.toggle('in-call', !!currentCall);
-    btnCall.textContent = currentCall ? '📞 В звонке' : '📞 Звонок';
-    renderContacts();
-    await loadMessages();
-    messageInput.focus();
+    currentContactId = cid; currentContactUsername = cnick;
+    chatPartnerName.textContent = cnick; updateChatPartnerStatus();
+    chatHeader.style.display = 'flex'; inputArea.style.display = 'flex'; noChatPlaceholder.style.display = 'none';
+    mainScreen.classList.add('chat-open'); document.getElementById('chat-area').classList.add('active-mobile');
+    btnCall.classList.toggle('in-call', !!currentCall); btnCall.textContent = currentCall ? '📞 В звонке' : '📞 Звонок';
+    renderContacts(); await loadMessages(); messageInput.focus();
 }
-
 function updateChatPartnerStatus() {
     if (!currentContactId) return;
     var s = contactsStatuses[currentContactId] || 'offline';
@@ -706,28 +596,20 @@ function updateChatPartnerStatus() {
 async function login(identity, password) {
     var isEmail = identity.indexOf('@') !== -1;
     var email = identity.trim();
-
     if (!isEmail) {
-        // Ищем профиль по никнейму
         var profile = await findProfileByNickname(identity.trim());
-        if (!profile || !profile.email) {
-            throw new Error('Пользователь не найден. Попробуйте войти по email.');
-        }
+        if (!profile || !profile.email) throw new Error('Пользователь не найден. Войдите по email.');
         email = profile.email;
     }
-
     var data = await supabaseSignIn(email, password);
     if (data.user) {
         await upsertProfile(data.user.id, data.user.user_metadata.nickname || email.split('@')[0], email);
     }
     return data;
 }
-
 async function register(email, password, nickname) {
     var data = await supabaseSignUp(email, password, nickname);
     if (data.user) {
-        // Supabase не всегда возвращает nickname в user_metadata сразу,
-        // поэтому явно сохраняем его в profiles
         await upsertProfile(data.user.id, nickname, email);
     }
     return data;
@@ -737,230 +619,111 @@ async function register(email, password, nickname) {
 async function onUserReady(user) {
     currentUser = user;
     if (!user) {
-        authScreen.style.display = 'flex';
-        mainScreen.classList.remove('active');
+        authScreen.style.display = 'flex'; mainScreen.classList.remove('active');
         if (presenceIntervalId) { clearInterval(presenceIntervalId); presenceIntervalId = null; }
         if (peer) { peer.destroy(); peer = null; }
-        endCallUI();
-        contacts = [];
-        currentContactId = null;
-        currentContactUsername = null;
-        messagesCache = {};
-        contactsList.innerHTML = '';
-        chatHeader.style.display = 'none';
-        inputArea.style.display = 'none';
-        noChatPlaceholder.style.display = 'flex';
-        messagesContainer.innerHTML = '';
-        document.getElementById('chat-area').classList.remove('active-mobile');
-        mainScreen.classList.remove('chat-open');
+        endCallUI(); contacts = []; currentContactId = null; currentContactUsername = null; messagesCache = {};
+        contactsList.innerHTML = ''; chatHeader.style.display = 'none'; inputArea.style.display = 'none';
+        noChatPlaceholder.style.display = 'flex'; messagesContainer.innerHTML = '';
+        document.getElementById('chat-area').classList.remove('active-mobile'); mainScreen.classList.remove('chat-open');
         return;
     }
     var nick = (user.user_metadata && user.user_metadata.nickname) || (user.email ? user.email.split('@')[0] : 'User');
-    authScreen.style.display = 'none';
-    mainScreen.classList.add('active');
-    myAvatar.textContent = getInitials(nick);
-    myUsername.textContent = nick;
-    await loadContacts();
-    setupPeer();
-    startPresencePolling();
+    authScreen.style.display = 'none'; mainScreen.classList.add('active');
+    myAvatar.textContent = getInitials(nick); myUsername.textContent = nick;
+    await loadContacts(); setupPeer(); startPresencePolling();
 }
 
 // ==================== ПЕРЕКЛЮЧЕНИЕ ВКЛАДОК ====================
 function setAuthMode(mode) {
     authMode = mode;
     if (mode === 'login') {
-        tabLogin.classList.add('active');
-        tabRegister.classList.remove('active');
-        loginFields.style.display = 'block';
-        regFields.classList.remove('show');
+        tabLogin.classList.add('active'); tabRegister.classList.remove('active');
+        loginFields.style.display = 'block'; regFields.classList.remove('show');
         btnSubmit.textContent = '🚀 Войти';
     } else {
-        tabRegister.classList.add('active');
-        tabLogin.classList.remove('active');
-        loginFields.style.display = 'none';
-        regFields.classList.add('show');
+        tabRegister.classList.add('active'); tabLogin.classList.remove('active');
+        loginFields.style.display = 'none'; regFields.classList.add('show');
         btnSubmit.textContent = '✨ Создать аккаунт';
     }
     authError.textContent = '';
 }
-
 tabLogin.addEventListener('click', function() { setAuthMode('login'); });
 tabRegister.addEventListener('click', function() { setAuthMode('register'); });
 
 // ==================== ОБРАБОТЧИКИ ====================
 btnSubmit.addEventListener('click', async function() {
-    authError.textContent = '';
-    btnSubmit.disabled = true;
-
+    authError.textContent = ''; btnSubmit.disabled = true;
     if (authMode === 'register') {
-        var email = regEmail.value.trim();
-        var nick = regNickname.value.trim();
-        var pass = regPassword.value;
-        if (!email || !nick || pass.length < 6) {
-            authError.textContent = 'Заполните все поля. Пароль минимум 6 символов.';
-            btnSubmit.disabled = false;
-            return;
-        }
+        var email = regEmail.value.trim(); var nick = regNickname.value.trim(); var pass = regPassword.value;
+        if (!email || !nick || pass.length < 6) { authError.textContent = 'Заполните все поля. Пароль минимум 6 символов.'; btnSubmit.disabled = false; return; }
         btnSubmit.textContent = 'Создаём...';
         try {
             await register(email, pass, nick);
             showToast('✅ Аккаунт создан! Теперь войдите.');
-            setAuthMode('login');
-            loginIdentity.value = nick;
-            regEmail.value = '';
-            regNickname.value = '';
-            regPassword.value = '';
+            setAuthMode('login'); loginIdentity.value = nick;
+            regEmail.value = ''; regNickname.value = ''; regPassword.value = '';
         } catch(e) {
             var msg = e.message || '';
-            if (msg.indexOf('already registered') !== -1 || msg.indexOf('already exists') !== -1) {
-                authError.textContent = 'Этот email уже зарегистрирован';
-            } else {
-                authError.textContent = msg;
-            }
+            authError.textContent = (msg.indexOf('already') !== -1) ? 'Этот email уже зарегистрирован' : msg;
         }
-        btnSubmit.textContent = '✨ Создать аккаунт';
-        btnSubmit.disabled = false;
+        btnSubmit.textContent = '✨ Создать аккаунт'; btnSubmit.disabled = false;
         return;
     }
-
-    // LOGIN
-    var identity = loginIdentity.value.trim();
-    var pass = loginPassword.value;
-    if (!identity || pass.length < 6) {
-        authError.textContent = 'Введите никнейм/email и пароль.';
-        btnSubmit.disabled = false;
-        return;
-    }
+    var identity = loginIdentity.value.trim(); var pass = loginPassword.value;
+    if (!identity || pass.length < 6) { authError.textContent = 'Введите никнейм/email и пароль.'; btnSubmit.disabled = false; return; }
     btnSubmit.textContent = 'Входим...';
     try {
         await login(identity, pass);
         showToast('👋 Добро пожаловать!');
-        loginIdentity.value = '';
-        loginPassword.value = '';
+        loginIdentity.value = ''; loginPassword.value = '';
     } catch(e) {
         var msg = e.message || '';
-        if (msg.indexOf('Invalid') !== -1 || msg.indexOf('invalid') !== -1) {
-            authError.textContent = 'Неверный никнейм/email или пароль';
-        } else {
-            authError.textContent = msg;
-        }
+        authError.textContent = (msg.indexOf('Invalid') !== -1) ? 'Неверный никнейм/email или пароль' : msg;
     }
-    btnSubmit.textContent = '🚀 Войти';
-    btnSubmit.disabled = false;
+    btnSubmit.textContent = '🚀 Войти'; btnSubmit.disabled = false;
 });
 
-// Enter в полях
 [loginIdentity, loginPassword, regEmail, regNickname, regPassword].forEach(function(el) {
     el.addEventListener('keydown', function(e) { if (e.key === 'Enter') btnSubmit.click(); });
 });
-
-btnLogout.addEventListener('click', async function() {
-    await supabaseSignOut();
-    onUserReady(null);
-});
-
+btnLogout.addEventListener('click', async function() { await supabaseSignOut(); onUserReady(null); });
 btnAddContact.addEventListener('click', async function() {
-    var n = addContactInput.value.trim();
-    if (!n) { showToast('Введите никнейм'); return; }
-    var p = await findProfileByNickname(n);
-    if (!p) { showToast('Пользователь не найден'); return; }
-    await addContact(p.id);
-    addContactInput.value = '';
+    var n = addContactInput.value.trim(); if (!n) { showToast('Введите никнейм'); return; }
+    var p = await findProfileByNickname(n); if (!p) { showToast('Пользователь не найден'); return; }
+    await addContact(p.id); addContactInput.value = '';
 });
-
-addContactInput.addEventListener('keydown', function(e) {
-    if (e.key === 'Enter') btnAddContact.click();
-});
-
-btnSend.addEventListener('click', async function() {
-    var t = messageInput.value;
-    if (!t.trim()) return;
-    messageInput.value = '';
-    await sendMessage(t);
-    messageInput.focus();
-});
-
-messageInput.addEventListener('keydown', function(e) {
-    if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); btnSend.click(); }
-});
-
-btnCall.addEventListener('click', function() {
-    if (currentCall) endCall();
-    else startCall();
-});
-
+addContactInput.addEventListener('keydown', function(e) { if (e.key === 'Enter') btnAddContact.click(); });
+btnSend.addEventListener('click', async function() { var t = messageInput.value; if (!t.trim()) return; messageInput.value = ''; await sendMessage(t); messageInput.focus(); });
+messageInput.addEventListener('keydown', function(e) { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); btnSend.click(); } });
+btnCall.addEventListener('click', function() { if (currentCall) endCall(); else startCall(); });
 btnHangup.addEventListener('click', endCall);
 btnToggleMic.addEventListener('click', toggleMute);
-
-volumeSlider.addEventListener('input', function() {
-    volumeLabel.textContent = volumeSlider.value + '%';
-    applyVolume();
-});
-
+volumeSlider.addEventListener('input', function() { volumeLabel.textContent = volumeSlider.value + '%'; applyVolume(); });
 btnBack.addEventListener('click', function() {
-    currentContactId = null;
-    currentContactUsername = null;
-    chatHeader.style.display = 'none';
-    inputArea.style.display = 'none';
-    noChatPlaceholder.style.display = 'flex';
-    messagesContainer.innerHTML = '';
-    document.getElementById('chat-area').classList.remove('active-mobile');
-    mainScreen.classList.remove('chat-open');
+    currentContactId = null; currentContactUsername = null;
+    chatHeader.style.display = 'none'; inputArea.style.display = 'none'; noChatPlaceholder.style.display = 'flex';
+    messagesContainer.innerHTML = ''; document.getElementById('chat-area').classList.remove('active-mobile'); mainScreen.classList.remove('chat-open');
     renderContacts();
 });
+document.addEventListener('keydown', function(e) { if (e.key === 'Escape' && currentCall) endCall(); });
 
-document.addEventListener('keydown', function(e) {
-    if (e.key === 'Escape' && currentCall) endCall();
-});
-
-// ==================== ЗАГРУЗКА PEERJS (ОПЦИОНАЛЬНО) ====================
-(function loadPeerJS() {
-    var script = document.createElement('script');
-    script.src = 'https://cdn.jsdelivr.net/npm/peerjs@1.5.2/dist/peerjs.min.js';
-    script.onload = function() { console.log('PeerJS loaded'); };
-    script.onerror = function() { console.log('PeerJS unavailable, звонки отключены'); };
-    document.head.appendChild(script);
+// ==================== PEERJS ====================
+(function() {
+    var s = document.createElement('script');
+    s.src = 'https://cdn.jsdelivr.net/npm/peerjs@1.5.2/dist/peerjs.min.js';
+    s.onload = function() { console.log('PeerJS loaded'); };
+    document.head.appendChild(s);
 })();
 
 // ==================== ИНИЦИАЛИЗАЦИЯ ====================
 setAuthMode('login');
-
-// Проверяем сохранённую сессию
 (async function init() {
-    // Пытаемся восстановить сессию из localStorage (если была)
-    var savedToken = localStorage.getItem('lumen_token');
-    if (savedToken) {
-        _accessToken = savedToken;
-        var user = await supabaseGetUser();
-        if (user) {
-            await onUserReady(user);
-            return;
-        }
-        _accessToken = null;
-        localStorage.removeItem('lumen_token');
-    }
+    var saved = localStorage.getItem('lumen_token');
+    if (saved) { _accessToken = saved; var user = await supabaseGetUser(); if (user) { await onUserReady(user); return; } _accessToken = null; localStorage.removeItem('lumen_token'); }
     onUserReady(null);
+    console.log('💜 Lumen готов');
 })();
-
-// Сохраняем токен при входе
-var origSignIn = supabaseSignIn;
-supabaseSignIn = async function(email, password) {
-    var data = await origSignIn(email, password);
-    if (data.access_token) {
-        localStorage.setItem('lumen_token', data.access_token);
-    }
-    return data;
-};
-var origSignUp = supabaseSignUp;
-supabaseSignUp = async function(email, password, nickname) {
-    var data = await origSignUp(email, password, nickname);
-    if (data.access_token) {
-        localStorage.setItem('lumen_token', data.access_token);
-    }
-    return data;
-};
-
-console.log('💜 Lumen Messenger готов (автономный режим)');
 </script>
 </body>
 </html>
