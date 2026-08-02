@@ -314,8 +314,11 @@ async function supabaseSignUp(email, password, nickname) {
         body: JSON.stringify({ email: email, password: password, data: { nickname: nickname } })
     });
     var data = await res.json();
-    if (!res.ok) throw new Error(data.msg || data.error_description || JSON.stringify(data));
-    if (data.access_token) _accessToken = data.access_token;
+    if (!res.ok) throw new Error(data.msg || JSON.stringify(data));
+    if (data.access_token) {
+        _accessToken = data.access_token;
+        localStorage.setItem('lumen_token', data.access_token);
+    }
     return data;
 }
 
@@ -720,6 +723,8 @@ async function login(identity, password) {
 async function register(email, password, nickname) {
     var data = await supabaseSignUp(email, password, nickname);
     if (data.user) {
+        // Supabase не всегда возвращает nickname в user_metadata сразу,
+        // поэтому явно сохраняем его в profiles
         await upsertProfile(data.user.id, nickname, email);
     }
     return data;
