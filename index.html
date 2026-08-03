@@ -442,10 +442,16 @@ async function findProfileByNickname(nick) {
 // ==================== КОНТАКТЫ ====================
 async function loadContacts() {
     if (!currentUser) return;
-    var result = await apiGet('lumen_contacts', { user_id: 'eq.' + currentUser.id, select: 'contact_id,profiles!lumen_contacts_contact_id_fkey(nickname)' });
-    contacts = (result.data || []).map(function(r) {
-        return { contact_id: r.contact_id, nickname: (r.profiles && r.profiles.nickname) ? r.profiles.nickname : 'Неизвестный' };
-    });
+    var result = await apiGet('lumen_contacts', { user_id: 'eq.' + currentUser.id });
+    // Загружаем контакты, а ники берём отдельным запросом
+    var rawContacts = result.data || [];
+    contacts = [];
+    for (var i = 0; i < rawContacts.length; i++) {
+        var c = rawContacts[i];
+        var profileRes = await apiGet('lumen_profiles', { id: 'eq.' + c.contact_id, limit: '1' });
+        var nickname = (profileRes.data && profileRes.data.length > 0) ? profileRes.data[0].nickname : 'Неизвестный';
+        contacts.push({ contact_id: c.contact_id, nickname: nickname });
+    }
     renderContacts();
 }
 async function addContact(cid) {
