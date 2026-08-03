@@ -720,8 +720,17 @@ document.addEventListener('keydown', function(e) { if (e.key === 'Escape' && cur
 // ==================== PEERJS ====================
 (function() {
     var s = document.createElement('script');
-    s.src = 'https://cdn.jsdelivr.net/npm/peerjs@1.5.2/dist/peerjs.min.js';
-    s.onload = function() { console.log('PeerJS loaded'); };
+    // Пробуем другой CDN
+    s.src = 'https://unpkg.com/peerjs@1.5.2/dist/peerjs.min.js';
+    s.onload = function() { console.log('PeerJS loaded'); setupPeer(); };
+    s.onerror = function() {
+        // Второй вариант
+        var s2 = document.createElement('script');
+        s2.src = 'https://cdnjs.cloudflare.com/ajax/libs/peerjs/1.5.2/peerjs.min.js';
+        s2.onload = function() { console.log('PeerJS loaded (fallback)'); setupPeer(); };
+        s2.onerror = function() { console.log('PeerJS unavailable'); };
+        document.head.appendChild(s2);
+    };
     document.head.appendChild(s);
 })();
 
