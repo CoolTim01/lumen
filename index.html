@@ -610,9 +610,9 @@ async function login(identity, password) {
 async function register(email, password, nickname) {
     var data = await supabaseSignUp(email, password, nickname);
     if (data.user) {
-        await upsertProfile(data.user.id, nickname, email);
+    await upsertProfile(data.user.id, data.user.user_metadata.nickname || email.split('@')[0], email);
+    await onUserReady(data.user);
     }
-    return data;
 }
 
 // ==================== ГЛАВНЫЙ ПОТОК ====================
@@ -628,7 +628,10 @@ async function onUserReady(user) {
         document.getElementById('chat-area').classList.remove('active-mobile'); mainScreen.classList.remove('chat-open');
         return;
     }
-    var nick = (user.user_metadata && user.user_metadata.nickname) || (user.email ? user.email.split('@')[0] : 'User');
+    var nick = 'User';
+    if (user.user_metadata && user.user_metadata.nickname) nick = user.user_metadata.nickname;
+    else if (user.email) nick = user.email.split('@')[0];
+    console.log('USER:', user.id, nick);
     authScreen.style.display = 'none'; mainScreen.classList.add('active');
     myAvatar.textContent = getInitials(nick); myUsername.textContent = nick;
     await loadContacts(); setupPeer(); startPresencePolling();
