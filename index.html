@@ -435,7 +435,7 @@ async function upsertProfile(uid, nick, email) {
     }
 }
 async function findProfileByNickname(nick) {
-    var result = await apiGet('lumen_profiles', { nickname: 'ilike.' + nick.trim(), limit: '1' });
+    var result = await apiGet('lumen_profiles', { nickname: 'eq.' + nick.trim(), limit: '1' });
     return (result.data && result.data.length > 0) ? result.data[0] : null;
 }
 
@@ -610,6 +610,7 @@ async function login(identity, password) {
     var data = await supabaseSignIn(email, password);
     if (data.user) {
         await upsertProfile(data.user.id, data.user.user_metadata.nickname || email.split('@')[0], email);
+        await onUserReady(data.user);
     }
     return data;
 }
