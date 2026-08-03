@@ -640,7 +640,7 @@ async function onUserReady(user) {
     console.log('USER:', user.id, nick);
     authScreen.style.display = 'none'; mainScreen.classList.add('active');
     myAvatar.textContent = getInitials(nick); myUsername.textContent = nick;
-    await loadContacts(); setupPeer(); startPresencePolling();
+    await loadContacts(); startPresencePolling();
 }
 
 // ==================== ПЕРЕКЛЮЧЕНИЕ ВКЛАДОК ====================
